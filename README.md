@@ -1,7 +1,6 @@
 # Performance evaluation of HTTP/3 w/ QUIC
 
 _Suggested software_: Vagrant, OpenVSwitch, docker, or alternatively mininet+docker (Comnetsemu).
-
 _Reference software_: https://blog.cloudflare.com/experiment-with-http-3-using-nginx-and-quiche/
 
 ## Team 👥
@@ -18,8 +17,8 @@ The first host will be the client used for the performance evaluation, while the
 2. Video streaming over **TCP**;
 3. Web page over **HTTP/2**;
 4. Video streaming over **HTTP/2**;
-5. Web page over **HTTP/3**;
-6. Video streaming over **HTTP/3**.
+5. Web page over **HTTP/3 + QUIC**;
+6. Video streaming over **HTTP/3 + QUIC**.
 
 Every instance of the 6 described above will run in the same host, in a separate Docker image, using a different port.
 
@@ -33,14 +32,14 @@ As shown in the image above, we decided to create 2 VMs: one for the client that
 
 In order to simplify the task of creating 6 different configurations for each instance that we want to test, we decided to use docker, setting up 2 different images (one for the web page, the other one for the video streaming) that will be slightly modified to use TCP only, HTTP/2 only or HTTP/3 w/ QUIC only.
 
-| Service         | Protocol      | IP address | Port        |
-| --------------- | ------------- | ---------- | ----------- |
-| Web page        | TCP           | eth2       | 10.0.0.1    |
-| Video streaming | TCP           | eth2       | 10.0.0.2    |
-| Web page        | HTTP/2        | eth1       | 192.168.1.1 |
-| Video streaming | HTTP/2        | eth1       | 192.168.1.2 |
-| Web page        | HTTP/3 + QUIC | eth1       | 192.168.3.1 |
-| Video streaming | HTTP/3 + QUIC | eth1       | 192.168.3.2 |
+| Service         | Protocol      | IP address  | Port |
+| --------------- | ------------- | ----------- | ---- |
+| Web page        | TCP           | 192.168.1.3 | 80   |
+| Video streaming | TCP           | 192.168.1.3 | 81   |
+| Web page        | HTTP/2        | 192.168.1.3 | 82   |
+| Video streaming | HTTP/2        | 192.168.1.3 | 83   |
+| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 84   |
+| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 85   |
 
 ### Network configuration 🌍
 
@@ -50,7 +49,7 @@ aaa
 
 aaa
 
-### Criteria ⚖️
+### Evaluation criteria ⚖️
 
 aaa
 
