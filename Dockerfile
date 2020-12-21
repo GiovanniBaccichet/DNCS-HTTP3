@@ -11,7 +11,6 @@ RUN apt-get update && \
 RUN curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
     tar xvzf nginx-$NGINX_VERSION.tar.gz && \
     git clone --recursive https://github.com/cloudflare/quiche && \
-    git clone --recursive https://github.com/google/ngx_brotli.git && \
     cd nginx-$NGINX_VERSION && \
     patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \ 
     export PATH="$HOME/.cargo/bin:$PATH" && \
