@@ -52,16 +52,18 @@ The commands we used for installing all dependencies are:
 ```bash
 % apt-get install -y curl
 % apt-get install -y git
-% apt-get install -y build-essential
-% apt-get install -y cargo
+% apt-get install -y libpcre3 libpcre3-dev
 % apt-get install -y zlib1g zlib1g-dev
-% apt-get install -y libpcre3-dev
+% apt-get install -y golang-go
+% apt-get install -y build-essential
+% apt-get install -y cmake
 ```
 
-The commands used for patching NGINX are the following:
+The commands used for patching NGINX are the following (found in the official [Cloudflare's quiche reposotory](https://github.com/cloudflare/quiche)):
 
 ```bash
 % curl -O https://nginx.org/download/nginx-1.16.1.tar.gz
+% tar xzvf nginx-1.16.1.tar.gz
 % git clone --recursive https://github.com/cloudflare/quiche
 % cd nginx-1.16.1
 % patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch
@@ -76,7 +78,9 @@ The commands used for patching NGINX are the following:
 % make
 ```
 
-#### Deployment
+#### Deployment 🚀
+
+aaa
 
 ### Network configuration 🌍
 
