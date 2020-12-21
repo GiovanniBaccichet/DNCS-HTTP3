@@ -69,13 +69,27 @@ The commands used for patching NGINX are the following (found in the official [C
 % cd nginx-1.16.1
 % patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch
 % ./configure                                 \
-       --prefix=$PWD                           \
-       --build="quiche-$(git --git-dir=../quiche/.git rev-parse --short HEAD)" \
-       --with-http_ssl_module                  \
-       --with-http_v2_module                   \
-       --with-http_v3_module                   \
-       --with-openssl=../quiche/deps/boringssl \
-       --with-quiche=../quiche
+    --prefix=/etc/nginx                    \
+    --sbin-path=/usr/sbin/nginx \
+    --modules-path=/usr/lib/nginx/modules \
+    --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --http-log-path=/var/log/nginx/access.log \
+    --pid-path=/var/run/nginx.pid \
+    --lock-path=/var/run/nginx.lock \
+    --http-client-body-temp-path=/var/cache/nginx/client_temp \
+    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+    --user=nginx \
+    --group=nginx  \
+    --build="quiche-$(git --git-dir=../quiche/.git rev-parse --short HEAD)" \
+    --with-http_ssl_module                  \
+    --with-http_v2_module                   \
+    --with-http_v3_module                   \
+    --with-openssl=../quiche/deps/boringssl \
+    --with-quiche=../quiche
 % make
 ```
 
