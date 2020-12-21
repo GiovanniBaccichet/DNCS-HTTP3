@@ -46,14 +46,15 @@ As shown in the table above, the IP address is the same across all the Docker in
 
 #### Creation 🧱
 
-The process of creating the docker images consisted in using as sub-system the latest ubuntu image and installing all the software needed for installing NGINX 1.16.1 (necessary for using the QUICHE patch). All the commands used in this section can be found in the `Dockerfile`.
-The commands we used for installing all dependencies are:
+The process of creating the docker images consisted in using as sub-system the latest ubuntu image and installing all the software needed for installing NGINX `1.16.1` (necessary for using the quiche patch). All the commands used in this section can be found in the `Dockerfile`.
+The commands we used for installing all the dependencies are:
 
 ```bash
 % apt-get install -y curl
 % apt-get install -y git
 % apt-get install -y libpcre3 libpcre3-dev
 % apt-get install -y zlib1g zlib1g-dev
+% apt-get install -y cargo
 % apt-get install -y golang-go
 % apt-get install -y build-essential
 % apt-get install -y cmake
@@ -76,6 +77,47 @@ The commands used for patching NGINX are the following (found in the official [C
        --with-openssl=../quiche/deps/boringssl \
        --with-quiche=../quiche
 % make
+```
+
+In the same guide we found the configuration file that we proceeded to modify with the purpose of customizing the port forwarded outside the container:
+
+```config
+events {
+    worker_connections  1024;
+}
+
+http {
+    server {
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2 (optional).
+        listen 443 ssl http2;
+
+        ssl_certificate      cert.crt;
+        ssl_certificate_key  cert.key;
+
+        # Enable all TLS versions (TLSv1.3 is required for QUIC).
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+
+        # Add Alt-Svc header to negotiate HTTP/3.
+        add_header alt-svc 'h3-23=":443"; ma=86400';
+    }
+}
+```
+
+As shown at the bottom of the configuration file, we created an auto-signed SSL certificate in order to use TLS encryption. We did it using the following command:
+
+```bash
+openssl req \
+       -newkey rsa:2048 -nodes -keyout cert.key \
+       -x509 -days 365 -out cert.crt
+```
+
+The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
+
+```bash
+aaa
 ```
 
 #### Deployment 🚀
