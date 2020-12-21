@@ -1,8 +1,5 @@
 FROM ubuntu:18.04 AS builder
 
-ENV NGINX_PATH /etc/nginx
-ENV NGINX_VERSION 1.16.1
-
 WORKDIR /opt
 
 RUN apt-get update && \
@@ -12,8 +9,7 @@ RUN curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
     tar xvzf nginx-$NGINX_VERSION.tar.gz && \
     git clone --recursive https://github.com/cloudflare/quiche && \
     cd nginx-$NGINX_VERSION && \
-    patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \ 
-    export PATH="$HOME/.cargo/bin:$PATH" && \
+    patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \
     ./configure                                 \
     --prefix=/etc/nginx                    \
     --sbin-path=/usr/sbin/nginx \
