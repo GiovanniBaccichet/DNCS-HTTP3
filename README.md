@@ -47,18 +47,7 @@ As shown in the table above, the IP address is the same across all the Docker in
 #### Creation 🧱
 
 The process of creating the docker images consisted in using as sub-system the latest ubuntu image and installing all the software needed for installing NGINX `1.16.1` (necessary for using the quiche patch). All the commands used in this section can be found in the `Dockerfile`.
-The commands we used for installing all the dependencies are:
-
-```bash
-% apt-get install -y curl
-% apt-get install -y git
-% apt-get install -y libpcre3 libpcre3-dev
-% apt-get install -y zlib1g zlib1g-dev
-% apt-get install -y cargo
-% apt-get install -y golang-go
-% apt-get install -y build-essential
-% apt-get install -y cmake
-```
+The dependencies needed are: `curl`, `git`, `libpcre3` and `libpcre3-dev`, `zlib1g` and `zlib1g-dev`, `cargo`, `golang-go`, `build-essential`, `cmake`.
 
 The commands used for patching NGINX are the following (found in the official [Cloudflare's quiche reposotory](https://github.com/cloudflare/quiche)):
 
@@ -120,19 +109,12 @@ http {
 }
 ```
 
-As shown at the bottom of the configuration file, we created an auto-signed SSL certificate in order to use TLS encryption. We did it using the following command:
+##### SSL Certificate 🔐
 
-```bash
-openssl req \
-       -newkey rsa:2048 -nodes -keyout cert.key \
-       -x509 -days 365 -out cert.crt
-```
+As shown at the bottom of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
+We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC.
 
-For building the final Docker image we used the following command (begin in the `Dockerfile`'s folder):
-
-```bash
-docker build -t quiche-evaluation:1.0
-```
+---
 
 The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
 
@@ -149,6 +131,11 @@ docker run -it -p 80:8080 quiche-evaluation:1.0
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
+For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC and in order to do that we needed to execute the following commands:
+
+```bash
+aaa
+```
 
 ### Network configuration 🌍
 
