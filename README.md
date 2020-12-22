@@ -35,12 +35,12 @@ In order to simplify the task of creating 6 different configurations for each in
 
 | Service         | Protocol      | IP address  | Port |
 | --------------- | ------------- | ----------- | ---- |
-| Web page        | TCP           | 192.168.1.3 | 80   |
-| Video streaming | TCP           | 192.168.1.3 | 81   |
-| Web page        | HTTP/2        | 192.168.1.3 | 82   |
-| Video streaming | HTTP/2        | 192.168.1.3 | 83   |
-| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 84   |
-| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 85   |
+| Web page        | TCP           | 192.168.1.3 | 81   |
+| Video streaming | TCP           | 192.168.1.3 | 82   |
+| Web page        | HTTP/2        | 192.168.1.3 | 83   |
+| Video streaming | HTTP/2        | 192.168.1.3 | 84   |
+| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 85   |
+| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 86   |
 
 As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. We used ports from 80 to 85 for differentiating each instance.
 
@@ -93,7 +93,7 @@ The commands used for patching NGINX are the following (found in the official [C
 % make
 ```
 
-In the same guide we found the configuration file that we proceeded to modify with the purpose of customizing the port forwarded outside the container:
+In the same guide we found the configuration file that we proceeded to modify with the purpose of customizing the port forwarded outside the container and, most important thing, enabling HTTP/2 or HTTP/3 on demand:
 
 ```config
 events {
@@ -128,6 +128,12 @@ openssl req \
        -x509 -days 365 -out cert.crt
 ```
 
+For building the final Docker image we used the following command (begin in the `Dockerfile`'s folder):
+
+```bash
+docker build -t quiche-evaluation:1.0
+```
+
 The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
 
 ```bash
@@ -136,7 +142,13 @@ aaa
 
 #### Deployment 🚀
 
-aaa
+For running the generic images just created the command to use is:
+
+```bash
+docker run -it -p 80:8080 quiche-evaluation:1.0
+```
+
+Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
 
 ### Network configuration 🌍
 
