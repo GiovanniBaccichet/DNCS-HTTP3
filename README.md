@@ -35,32 +35,21 @@ In order to simplify the task of creating 6 different configurations for each in
 
 | Service         | Protocol      | IP address  | Port |
 | --------------- | ------------- | ----------- | ---- |
-| Web page        | TCP           | 192.168.1.3 | 80   |
-| Video streaming | TCP           | 192.168.1.3 | 81   |
-| Web page        | HTTP/2        | 192.168.1.3 | 82   |
-| Video streaming | HTTP/2        | 192.168.1.3 | 83   |
-| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 84   |
-| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 85   |
+| Web page        | TCP           | 192.168.1.3 | 81   |
+| Video streaming | TCP           | 192.168.1.3 | 82   |
+| Web page        | HTTP/2        | 192.168.1.3 | 83   |
+| Video streaming | HTTP/2        | 192.168.1.3 | 84   |
+| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 85   |
+| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 86   |
 
 As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. We used ports from 80 to 85 for differentiating each instance.
 
 #### Creation 🧱
 
 The process of creating the docker images consisted in using as sub-system the latest ubuntu image and installing all the software needed for installing NGINX `1.16.1` (necessary for using the quiche patch). All the commands used in this section can be found in the `Dockerfile`.
-The commands we used for installing all the dependencies are:
+The dependencies needed are: `curl`, `git`, `libpcre3` and `libpcre3-dev`, `zlib1g` and `zlib1g-dev`, `cargo`, `golang-go`, `build-essential`, `cmake`.
 
-```bash
-% apt-get install -y curl
-% apt-get install -y git
-% apt-get install -y libpcre3 libpcre3-dev
-% apt-get install -y zlib1g zlib1g-dev
-% apt-get install -y cargo
-% apt-get install -y golang-go
-% apt-get install -y build-essential
-% apt-get install -y cmake
-```
-
-The commands used for patching NGINX are the following (found in the official [Cloudflare's quiche reposotory](https://github.com/cloudflare/quiche)):
+The commands used for patching NGINX are the following (found in the official [Cloudflare's quiche reposotory](https://github.com/cloudflare/quiche), with some minor modification):
 
 ```bash
 % curl -O https://nginx.org/download/nginx-1.16.1.tar.gz
@@ -69,17 +58,31 @@ The commands used for patching NGINX are the following (found in the official [C
 % cd nginx-1.16.1
 % patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch
 % ./configure                                 \
-       --prefix=$PWD                           \
-       --build="quiche-$(git --git-dir=../quiche/.git rev-parse --short HEAD)" \
-       --with-http_ssl_module                  \
-       --with-http_v2_module                   \
-       --with-http_v3_module                   \
-       --with-openssl=../quiche/deps/boringssl \
-       --with-quiche=../quiche
+    --prefix=/etc/nginx                    \
+    --sbin-path=/usr/sbin/nginx \
+    --modules-path=/usr/lib/nginx/modules \
+    --conf-path=/etc/nginx/nginx.conf \
+    --error-log-path=/var/log/nginx/error.log \
+    --http-log-path=/var/log/nginx/access.log \
+    --pid-path=/var/run/nginx.pid \
+    --lock-path=/var/run/nginx.lock \
+    --http-client-body-temp-path=/var/cache/nginx/client_temp \
+    --http-proxy-temp-path=/var/cache/nginx/proxy_temp \
+    --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp \
+    --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp \
+    --http-scgi-temp-path=/var/cache/nginx/scgi_temp \
+    --user=nginx \
+    --group=nginx  \
+    --build="quiche-$(git --git-dir=../quiche/.git rev-parse --short HEAD)" \
+    --with-http_ssl_module                  \
+    --with-http_v2_module                   \
+    --with-http_v3_module                   \
+    --with-openssl=../quiche/deps/boringssl \
+    --with-quiche=../quiche
 % make
 ```
 
-In the same guide we found the configuration file that we proceeded to modify with the purpose of customizing the port forwarded outside the container:
+In the same guide we found the configuration file that we proceeded to modify with the purpose of customizing the port forwarded outside the container and, most important thing, enabling HTTP/2 or HTTP/3 on demand:
 
 ```config
 events {
@@ -106,15 +109,19 @@ http {
 }
 ```
 
-As shown at the bottom of the configuration file, we created an auto-signed SSL certificate in order to use TLS encryption. We did it using the following command:
+##### SSL Certificate 🔐
+
+As shown at the bottom of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
+We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC, in particular we used the following commands outside Docker and than copied the necessary files inside the container:
 
 ```bash
-openssl req \
-       -newkey rsa:2048 -nodes -keyout cert.key \
-       -x509 -days 365 -out cert.crt
+sudo certbot -d localhost.dprojects.it --preferred-challenge dns certonly
+cd /etc/letsencrypt/live/localhost.dprojects.it/
 ```
 
-/etc/letsencrypt/live/localhost.dprojects.it/
+With these commands we generated `fullchain.pem` and `privkey.pem` than we used said files for the SSL/ TLS encryption of HTTP/2 and HTTP/3, placing them into `/etc/nginx` (using the `COPY` command in the `Dockerfile`).
+
+---
 
 The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
 
@@ -124,7 +131,18 @@ aaa
 
 #### Deployment 🚀
 
+For running the generic images just created the command to use is:
+
+```bash
+docker run -it -p 80:8080 quiche-evaluation:1.0
+```
+
+Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
+For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC and in order to do that we needed to execute the following commands:
+
+```bash
 aaa
+```
 
 ### Network configuration 🌍
 
