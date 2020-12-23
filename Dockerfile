@@ -12,8 +12,7 @@ RUN curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
     tar xvzf nginx-$NGINX_VERSION.tar.gz && \
     git clone --recursive https://github.com/cloudflare/quiche && \
     cd nginx-$NGINX_VERSION && \
-    patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \ 
-    export PATH="$HOME/.cargo/bin:$PATH" && \
+    patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \
     ./configure                                 \
     --prefix=/etc/nginx                    \
     --sbin-path=/usr/sbin/nginx \
@@ -43,7 +42,7 @@ FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
-
+COPY certs/ /etc/nginx/
 
 RUN groupadd  nginx \
     && useradd -m -d  /var/cache/nginx -s /sbin/nologin -g nginx nginx \

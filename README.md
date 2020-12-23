@@ -114,6 +114,8 @@ openssl req \
        -x509 -days 365 -out cert.crt
 ```
 
+/etc/letsencrypt/live/localhost.dprojects.it/
+
 The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
 
 ```bash
