@@ -223,11 +223,7 @@ docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
-For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC and in order to do that we needed to execute the following commands:
-
-```bash
-aaa
-```
+For the purpose fo this project, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC.
 
 ### Network configuration 🌍
 
