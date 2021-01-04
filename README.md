@@ -208,7 +208,11 @@ http {
 }
 ```
 
-We used the SSL certificate generated before, during the configuration of the base image.
+The last mod we did to the base configuration was to automatically execute the ffmpeg video streaming (without typing every time the following command):
+
+```bash
+ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
+```
 
 #### Deployment 🚀
 
@@ -219,11 +223,7 @@ docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
-For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC and in order to do that we needed to execute the following commands:
-
-```bash
-aaa
-```
+For the purpose fo this project, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC.
 
 ### Network configuration 🌍
 
