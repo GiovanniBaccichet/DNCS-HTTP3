@@ -170,19 +170,14 @@ rtmp {
 }
 
 http {
-  # sendfile off;
-  # tcp_nopush on;
-  # aio on;
-  # directio 512;
-  # default_type application/octet-stream;
+    sendfile off;
+    tcp_nopush on;
+    aio on;
+    directio 512;
+    default_type application/octet-stream;
 
     server {
-    listen 80;
-	server_name localhost.dprojects.it;
-
-	location /player {
-	    root html;
-	}
+        listen 8080;
 
         location / {
             # Disable cache
@@ -207,44 +202,7 @@ http {
                 video/mp2t ts;
             }
 
-            root /mnt;
-        }
-    }
-
-
-server {
-
-      listen 443 ssl http2;
-
-        server_name localhost.dprojects.it;
-
-        ssl_certificate      fullchain.pem;
-        ssl_certificate_key  privkey.pem;
-
-        # Enable all TLS versions (TLSv1.3 is required for QUIC).
-        ssl_protocols TLSv1.3 SSLv3 TLSv1 TLSv1.1 TLSv1.2;
-        ssl_early_data on;
-
-
-
-        # Request buffering in not currently supported for HTTP/3.
-        #proxy_request_buffering off;
-
-        location / {
-            # Disable cache
-            add_header 'Cache-Control' 'no-cache';
-
-   	        # CORS setup
-            add_header 'Access-Control-Allow-Origin' '*' always;
-            add_header 'Access-Control-Expose-Headers' 'Content-Length';
-
-            types {
-                application/dash+xml mpd;
-                application/vnd.apple.mpegurl m3u8;
-                video/mp2t ts;
-            }
-
-            root /mnt;
+            root /mnt/;
         }
     }
 }
@@ -261,7 +219,11 @@ docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
-For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC. In order to do that we created different `nginx.conf` files (one for each kind of container) and, using the `Dockerfile`, we created all the different containers.
+For our purpose, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC and in order to do that we needed to execute the following commands:
+
+```bash
+aaa
+```
 
 ### Network configuration 🌍
 

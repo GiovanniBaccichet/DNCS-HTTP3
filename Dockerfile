@@ -39,7 +39,7 @@ FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
-
+COPY certs/ /etc/nginx/
 
 RUN groupadd  nginx \
     && useradd -m -d  /var/cache/nginx -s /sbin/nologin -g nginx nginx \
