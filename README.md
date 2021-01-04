@@ -208,6 +208,8 @@ http {
 }
 ```
 
+We used the SSL certificate generated before, during the configuration of the base image.
+
 #### Deployment 🚀
 
 For running the generic images just created, the command to use is:
