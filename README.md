@@ -136,20 +136,84 @@ cd /etc/letsencrypt/live/localhost.dprojects.it/
 
 With these commands we generated `fullchain.pem` and `privkey.pem` than we used said files for the SSL/ TLS encryption of HTTP/2 and HTTP/3, placing them into `/etc/nginx` (using the `COPY` command in the `Dockerfile`).
 
----
+##### Video streaming mod 📹
 
-The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it using the following commands:
+The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it installing RTMP module for NGINX (following a [guide](https://www.nginx.com/blog/video-streaming-for-remote-learning-with-nginx/) on the official NGINX website, but using a fork of it, that can be found [here](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git)).
+The video streaming protocol we decided to use il HLS. We chose it for its large diffusion and for its performance. At first, HLS was exclusive to iPhones, but today almost every device supports this protocol, so it has become a proprietary format. As the name implies, HLS delivers content via standard HTTP web servers. This means that no special infrastructure is needed to deliver HLS content. Any standard web server or CDN will work. Additionally, content is less likely to be blocked by firewalls with this protocol, which is a plus. HLS can play video encoded with the H.264 or HEVC/H.265 codecs.
+With all this in mind, we thought it could represent well a real streaming scenario.
+For en(de)codig the demo video file we used `ffmpeg`, looping the video for creating a continuous streaming.
+The `nginx.conf` we used is the following:
 
-```bash
-aaa
+```conf
+worker_processes  auto;
+events {
+    worker_connections  1024;
+}
+
+# RTMP configuration
+rtmp {
+    server {
+        listen 1935; # Listen on standard RTMP port
+        chunk_size 4000;
+
+        application show {
+            live on;
+            # Turn on HLS
+            hls on;
+            hls_path /mnt/hls/;
+            hls_fragment 3;
+            hls_playlist_length 60;
+            # disable consuming the stream from nginx as rtmp
+            deny play all;
+        }
+    }
+}
+
+http {
+    sendfile off;
+    tcp_nopush on;
+    aio on;
+    directio 512;
+    default_type application/octet-stream;
+
+    server {
+        listen 8080;
+
+        location / {
+            # Disable cache
+            add_header 'Cache-Control' 'no-cache';
+
+            # CORS setup
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+            # allow CORS preflight requests
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+
+            types {
+                application/dash+xml mpd;
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            }
+
+            root /mnt/;
+        }
+    }
+}
 ```
 
 #### Deployment 🚀
 
-For running the generic images just created the command to use is:
+For running the generic images just created, the command to use is:
 
 ```bash
-docker run -it -p 80:8080 quiche-evaluation:1.0
+docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/http3.text.nginx.conf:/etc/nginx/nginx.conf nginx-quic
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
