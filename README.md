@@ -208,7 +208,11 @@ http {
 }
 ```
 
-We used the SSL certificate generated before, during the configuration of the base image.
+The last mod we did to the base configuration was to automatically execute the ffmpeg video streaming (without typing every time the following command):
+
+```bash
+ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
+```
 
 #### Deployment 🚀
 
