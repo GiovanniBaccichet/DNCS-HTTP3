@@ -23,7 +23,7 @@ The first host will be the client used for the performance evaluation, while the
 
 Every instance of the 6 described above will run in the same host, in a separate Docker image, using a different port.
 
-<img src="DNCS-2.png" width="650">
+<img src="DNCS-2.png" width="1000">
 
 ## Vagrant configuration 🖥
 
