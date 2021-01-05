@@ -23,7 +23,7 @@ The first host will be the client used for the performance evaluation, while the
 
 Every instance of the 6 described above will run in the same host, in a separate Docker image, using a different port.
 
-<img src="DNCS-2.jpg" width="650">
+<img src="DNCS-2.png" width="650">
 
 ## Vagrant configuration 🖥
 
@@ -223,7 +223,7 @@ docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/
 ```
 
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
-For the purpose fo this project, we need to slightly modify the instance of NGINX, for enabling HTTP/2 and HTTP/3 + QUIC.
+In order to create specific containers for TPC, HTTP/2 and HTTP/3 we just modified the configuration path in the command above. All the different config files are in the `confs` folder.
 
 ### Network configuration 🌍
 
