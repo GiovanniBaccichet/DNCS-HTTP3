@@ -8,22 +8,22 @@ _Reference software_: https://blog.cloudflare.com/experiment-with-http-3-using-n
 
 ## Table of contents 🗂
 
--   [👥 Team](#team---)
--   [🔍 Overview of the project](#overview-of-the-project)
--   [🖥 Vagrant configuration](#vagrant-configuration)
-    -   [🐳 Docker images: creation and deployment](#docker-images--creation-and-deployment)
-        -   [🧱 Creation](#creation)
-        -   [🚀 Deployment](#deployment)
-    -   [🌍 Network configuration](#network-configuration)
--   [⏱ Performance evaluation](#performance-evaluation)
-    -   [⚖️ Evaluation criteria](#evaluation-criteria)
--   [🧾 Results](#results---)
+-   [Team 👥](#team---)
+-   [Overview of the project 🔍](#overview-of-the-project)
+-   [Vagrant configuration 🖥](#vagrant-configuration)
+    -   [Docker images: creation and deployment 🐳](#docker-images--creation-and-deployment)
+        -   [Creation 🧱](#creation)
+        -   [Deployment 🚀](#deployment)
+    -   [Network configuration 🌍](#network-configuration)
+-   [Performance evaluation ⏱](#performance-evaluation)
+    -   [Evaluation criteria ⚖️](#evaluation-criteria)
+-   [Results 🧾](#results---)
 
-## 👥 Team
+## Team 👥
 
 Team members are _Baccichet Giovanni_ (`202869`) and _Parpinello Davide_ (`201494`).
 
-## 🔍 Overview of the project
+## Overview of the project 🔍
 
 Our task is to build a virtualized framework for analyzing the performance of HTTP/3 w/ QUIC with respect to HTTP/2 and TCP.
 In order to do that we figured out that the most efficient way of doing it is, using Vagrant, to create 2 hosts, one of them containing 6 Docker instances.
@@ -40,11 +40,11 @@ Every instance of the 6 described above will run in the same host, in a separate
 
 <img src="DNCS-2.png" width="1000">
 
-## 🖥 Vagrant configuration
+## Vagrant configuration 🖥
 
 As shown in the image above, we decided to create 2 VMs: one for the client that will evaluate the performance of the different protocols, and the other one is for the server, providing the HTMl server and video streaming. The whole configuration, containing the router, the switch and the hosts, can be found in the `Vagrantfile`.
 
-### 🐳 Docker images: creation and deployment
+### Docker images: creation and deployment 🐳
 
 In order to simplify the task of creating 6 different configurations for each instance that we want to test, we decided to use docker, setting up 2 different images (one for the web page, the other one for the video streaming) that will be slightly modified to use TCP only, HTTP/2 only or HTTP/3 w/ QUIC only.
 
@@ -59,7 +59,7 @@ In order to simplify the task of creating 6 different configurations for each in
 
 As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. We used ports from 80 to 85 for differentiating each instance.
 
-#### 🧱 Creation
+#### Creation 🧱
 
 The process of creating the docker images consisted in using as sub-system the latest ubuntu image and installing all the software needed for installing NGINX `1.16.1` (necessary for using the quiche patch). All the commands used in this section can be found in the `Dockerfile`.
 The dependencies needed are: `curl`, `git`, `libpcre3` and `libpcre3-dev`, `zlib1g` and `zlib1g-dev`, `cargo`, `golang-go`, `build-essential`, `cmake`.
@@ -137,7 +137,7 @@ http {
 }
 ```
 
-##### 🔐 SSL Certificate
+##### SSL Certificate 🔐
 
 As shown at the end of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
 We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC, in particular we used the following commands outside Docker and than copied the necessary files inside the container:
@@ -149,7 +149,7 @@ cd /etc/letsencrypt/live/localhost.dprojects.it/
 
 With these commands we generated `fullchain.pem` and `privkey.pem` than we used said files for the SSL/ TLS encryption of HTTP/2 and HTTP/3, placing them into `/etc/nginx` (using the `COPY` command in the `Dockerfile`).
 
-##### 📹 Video streaming mod
+##### Video streaming mod 📹
 
 The second Docker image (the one responsible for the video streaming) is based on the first one: we modded it installing RTMP module for NGINX (following a [guide](https://www.nginx.com/blog/video-streaming-for-remote-learning-with-nginx/) on the official NGINX website, but using a fork of it, that can be found [here](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module.git)).
 The video streaming protocol we decided to use il HLS. We chose it for its large diffusion and for its performance. At first, HLS was exclusive to iPhones, but today almost every device supports this protocol, so it has become a proprietary format. As the name implies, HLS delivers content via standard HTTP web servers. This means that no special infrastructure is needed to deliver HLS content. Any standard web server or CDN will work. Additionally, content is less likely to be blocked by firewalls with this protocol, which is a plus. HLS can play video encoded with the H.264 or HEVC/H.265 codecs.
@@ -222,7 +222,7 @@ The last mod we did to the base configuration was to automatically execute the f
 ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
 ```
 
-#### 🚀 Deployment
+#### Deployment 🚀
 
 For running the generic images just created, the command to use is:
 
@@ -233,7 +233,7 @@ docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/
 Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
 In order to create specific containers for TPC, HTTP/2 and HTTP/3 we just modified the configuration path in the command above. All the different config files are in the `confs` folder.
 
-### 🌍 Network configuration
+### Network configuration 🌍
 
 In order to simulate a more realistic scenario, we decided to use different subnets: one for the client (that will do the performance evaluation) and one for the server (that will contain the 6 docker images).
 As shown in the image above, the router has 3 interfaces: one for each LAN and one for connecting to the Internet Gateway (Vagrant Management), `eth0`. All the information about the subnets are summarized in the table below:
@@ -245,14 +245,14 @@ As shown in the image above, the router has 3 interfaces: one for each LAN and o
 | Router | eth2      | 192.168.2.1 | 2      |
 | Server | eth1      | 192.168.2.2 | 2      |
 
-## ⏱ Performance evaluation
+## Performance evaluation ⏱
 
 aaa
 
-### ⚖️ Evaluation criteria
+### Evaluation criteria ⚖️
 
 aaa
 
-## 🧾 Results
+## Results 🧾
 
 aaa
