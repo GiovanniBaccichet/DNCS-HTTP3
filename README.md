@@ -108,8 +108,6 @@ http {
         ssl_protocols TLSv1.3;
         ssl_early_data on;
 
-
-
         # Request buffering in not currently supported for HTTP/3.
         proxy_request_buffering off;
 
@@ -126,7 +124,7 @@ http {
 
 ##### SSL Certificate 🔐
 
-As shown at the bottom of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
+As shown at the end of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
 We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC, in particular we used the following commands outside Docker and than copied the necessary files inside the container:
 
 ```bash
@@ -142,14 +140,9 @@ The second Docker image (the one responsible for the video streaming) is based o
 The video streaming protocol we decided to use il HLS. We chose it for its large diffusion and for its performance. At first, HLS was exclusive to iPhones, but today almost every device supports this protocol, so it has become a proprietary format. As the name implies, HLS delivers content via standard HTTP web servers. This means that no special infrastructure is needed to deliver HLS content. Any standard web server or CDN will work. Additionally, content is less likely to be blocked by firewalls with this protocol, which is a plus. HLS can play video encoded with the H.264 or HEVC/H.265 codecs.
 With all this in mind, we thought it could represent well a real streaming scenario.
 For en(de)codig the demo video file we used `ffmpeg`, looping the video for creating a continuous streaming.
-The `nginx.conf` we used is the following:
+We moodified the following section of `nginx.conf`:
 
 ```conf
-worker_processes  auto;
-events {
-    worker_connections  1024;
-}
-
 # RTMP configuration
 rtmp {
     server {
@@ -227,7 +220,15 @@ In order to create specific containers for TPC, HTTP/2 and HTTP/3 we just modifi
 
 ### Network configuration 🌍
 
-aaa
+In order to simulate a more realistic scenario, we decided to use different subnets: one for the client (that will do the performance evaluation) and one for the server (that will contain the 6 docker images).
+As shown in the image above, the router has 3 interfaces: one for each LAN and one for connecting to the Internet Gateway (Vagrant Management), `eth0`. All the information about the subnets are summarized in the table below:
+
+| Device | Interface | IP address  | Subnet |
+| ------ | --------- | ----------- | ------ |
+| Router | eth1      | 192.168.1.1 | 1      |
+| Client | eth1      | 192.168.1.2 | 1      |
+| Router | eth2      | 192.168.2.1 | 2      |
+| Server | eth1      | 192.168.2.2 | 2      |
 
 ## Performance evaluation ⏱
 
