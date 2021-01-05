@@ -35,12 +35,12 @@ In order to simplify the task of creating 6 different configurations for each in
 
 | Service         | Protocol      | IP address  | Port |
 | --------------- | ------------- | ----------- | ---- |
-| Web page        | TCP           | 192.168.1.3 | 81   |
-| Video streaming | TCP           | 192.168.1.3 | 82   |
-| Web page        | HTTP/2        | 192.168.1.3 | 83   |
-| Video streaming | HTTP/2        | 192.168.1.3 | 84   |
-| Web page        | HTTP/3 + QUIC | 192.168.1.3 | 85   |
-| Video streaming | HTTP/3 + QUIC | 192.168.1.3 | 86   |
+| Web page        | TCP           | 192.168.2.2 | 81   |
+| Video streaming | TCP           | 192.168.2.2 | 82   |
+| Web page        | HTTP/2        | 192.168.2.2 | 83   |
+| Video streaming | HTTP/2        | 192.168.2.2 | 84   |
+| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 85   |
+| Video streaming | HTTP/3 + QUIC | 192.168.2.2 | 86   |
 
 As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. We used ports from 80 to 85 for differentiating each instance.
 
