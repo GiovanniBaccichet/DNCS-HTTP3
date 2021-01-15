@@ -8,16 +8,16 @@ _Reference software_: https://blog.cloudflare.com/experiment-with-http-3-using-n
 
 ## Table of contents 🗂
 
--   [Team 👥](#team---)
--   [Overview of the project 🔍](#overview-of-the-project)
--   [Vagrant configuration 🖥](#vagrant-configuration)
-    -   [Docker images: creation and deployment 🐳](#docker-images--creation-and-deployment)
-        -   [Creation 🧱](#creation)
-        -   [Deployment 🚀](#deployment)
-    -   [Network configuration 🌍](#network-configuration)
--   [Performance evaluation ⏱](#performance-evaluation)
-    -   [Evaluation criteria ⚖️](#evaluation-criteria)
--   [Results 🧾](#results---)
+-   [Team 👥](#team-)
+-   [Overview of the project 🔍](#overview-of-the-project-)
+-   [Vagrant configuration 🖥](#vagrant-configuration-)
+    -   [Docker images: creation and deployment 🐳](#docker-images--creation-and-deployment-)
+        -   [Creation 🧱](#creation-)
+        -   [Deployment 🚀](#deployment-)
+    -   [Network configuration 🌍](#network-configuration-)
+-   [Performance evaluation ⏱](#performance-evaluation-)
+    -   [Evaluation criteria ⚖️](#evaluation-criteria-)
+-   [Results 🧾](#results-)
 
 ## Team 👥
 
@@ -244,6 +244,8 @@ As shown in the image above, the router has 3 interfaces: one for each LAN and o
 | Client | eth1      | 192.168.1.2 | 1      |
 | Router | eth2      | 192.168.2.1 | 2      |
 | Server | eth1      | 192.168.2.2 | 2      |
+
+Obviously both hosts have an `eth0` interface in order to connect to the Vagrant management.
 
 ## Performance evaluation ⏱
 
