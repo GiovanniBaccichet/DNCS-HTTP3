@@ -9,8 +9,10 @@ RUN apt-get update && \
     apt-get install -y curl git libpcre3 libpcre3-dev zlib1g zlib1g-dev cargo golang-go build-essential cmake;
 
 RUN curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
+    curl -O https://video.openedu.tw/Examples/big_buck_bunny_720p_10mb.mp4 && \
     tar xvzf nginx-$NGINX_VERSION.tar.gz && \
     git clone --recursive https://github.com/cloudflare/quiche && \
+    git clone https://github.com/arut/nginx-rtmp-module.git && \
     cd nginx-$NGINX_VERSION && \
     patch -p01 < ../quiche/extras/nginx/nginx-1.16.patch && \
     ./configure                                 \
@@ -43,6 +45,7 @@ FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
+COPY --from=builder /opt/big_buck_bunny_720p_10mb.mp4 /root/big_buck_bunny_720p_10mb.mp4
 COPY certs/ /etc/nginx/
 
 RUN groupadd  nginx \
@@ -51,10 +54,13 @@ RUN groupadd  nginx \
     && touch /var/log/nginx/access.log /var/log/nginx/error.log \
     && chown nginx: /var/log/nginx/access.log /var/log/nginx/error.log \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+    && ln -sf /dev/stderr /var/log/nginx/error.log \
+    && apt-get update \
+    && apt-get install -y ffmpeg
 
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
 
 CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT "ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream" && /bin/bash
