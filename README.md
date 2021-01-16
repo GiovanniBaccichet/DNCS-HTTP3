@@ -224,14 +224,7 @@ ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264
 
 #### Deployment 🚀
 
-For running the generic images just created, the command to use is:
-
-```bash
-docker run --name nginx -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $PWD/confs/http3.text.nginx.conf:/etc/nginx/nginx.conf nginx-quic
-```
-
-Where the tag `-p` is used to map port 80 of the container to port 8080 of the host running said Docker image.
-In order to create specific containers for TPC, HTTP/2 and HTTP/3 we just modified the configuration path in the command above. All the different config files are in the `confs` folder.
+In order to build and run all the docker instances discussed earlier, we found convenient creating a bash script that will docker-build all the images and then docker-run all the containers. Said script can be found in the `Docker` folder and it is called `docker_deploy.sh`
 
 ### Network configuration 🌍
 
