@@ -19,52 +19,38 @@ Vagrant.configure("2") do |config|
 
   # ROUTER
 
-  config.vm.define "router" do |router1|
-    router1.vm.box = "ubuntu/bionic64"
-    router1.vm.hostname = "router"
-    router1.vm.network "private_network", virtualbox__intnet: "broadcast_router-south", auto_config: false
-    router1.vm.network "private_network", virtualbox__intnet: "broadcast_router-inter", auto_config: false
-    router1.vm.provision "shell", path: "router.sh"
-    router1.vm.provider "virtualbox" do |vb|
-      vb.memory = 256
-    end
-  end
-
-  # SWITCH
-
-  config.vm.define "switch" do |switch|
-    switch.vm.box = "ubuntu/bionic64"
-    switch.vm.hostname = "switch"
-    switch.vm.network "private_network", virtualbox__intnet: "broadcast_router-south-1", auto_config: false
-    switch.vm.network "private_network", virtualbox__intnet: "broadcast_client", auto_config: false
-    switch.vm.network "private_network", virtualbox__intnet: "broadcast_server", auto_config: false
-    switch.vm.provision "shell", path: "switch.sh"
-    switch.vm.provider "virtualbox" do |vb|
-      vb.memory = 256
+  config.vm.define "router" do |router|
+    router.vm.box = "ubuntu/bionic64"
+    router.vm.hostname = "router"
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-south", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-inter", auto_config: false
+    router.vm.provision "shell", path: "vagrant/router.sh"
+    router.vm.provider "virtualbox" do |vb|
+    vb.memory = 256
     end
   end
 
   # HOST: CLIENT
 
-  config.vm.define "client" do |hosta|
-    hosta.vm.box = "ubuntu/bionic64"
-    hosta.vm.hostname = "client"
-    hosta.vm.network "private_network", virtualbox__intnet: "broadcast_client", auto_config: false
-    hosta.vm.provision "shell", path: "client.sh"
-    hosta.vm.provider "virtualbox" do |vb|
-      vb.memory = 256
+  config.vm.define "client" do |client|
+    client.vm.box = "ubuntu/bionic64"
+    client.vm.hostname = "client"
+    client.vm.network "private_network", virtualbox__intnet: "broadcast_client", auto_config: false
+    client.vm.provision "shell", path: "vagrant/client.sh"
+    client.vm.provider "virtualbox" do |vb|
+    vb.memory = 256
     end
   end
 
   # HOST: SERVER
 
-  config.vm.define "server" do |hostb|
-    hostb.vm.box = "ubuntu/bionic64"
-    hostb.vm.hostname = "server"
-    hostb.vm.network "private_network", virtualbox__intnet: "broadcast_server", auto_config: false
-    hostb.vm.provision "shell", path: "server.sh"
-    hostb.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
+  config.vm.define "server" do |server|
+    server.vm.box = "ubuntu/bionic64"
+    server.vm.hostname = "server"
+    server.vm.network "private_network", virtualbox__intnet: "broadcast_server", auto_config: false
+    server.vm.provision "shell", path: "vagrant/server.sh"
+    server.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
     end
   end
 end
