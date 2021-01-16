@@ -12,8 +12,6 @@ _Reference software_: https://blog.cloudflare.com/experiment-with-http-3-using-n
 -   [Overview of the project 🔍](#overview-of-the-project-)
 -   [Vagrant configuration 🖥](#vagrant-configuration-)
     -   [Docker images: creation and deployment 🐳](#docker-images--creation-and-deployment-)
-        -   [Creation 🧱](#creation-)
-        -   [Deployment 🚀](#deployment-)
     -   [Network configuration 🌍](#network-configuration-)
 -   [Performance evaluation ⏱](#performance-evaluation-)
     -   [Evaluation criteria ⚖️](#evaluation-criteria-)
