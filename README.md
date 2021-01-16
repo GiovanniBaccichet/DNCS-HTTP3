@@ -38,7 +38,7 @@ The first host will be the client used for the performance evaluation, while the
 
 Every instance of the 6 described above will run in the same host, in a separate Docker image, using a different port.
 
-<img src="DNCS-2.png" width="1000">
+<img src="Network-topology.png" width="1000">
 
 ## Vagrant configuration 🖥
 
@@ -140,7 +140,7 @@ http {
 ##### SSL Certificate 🔐
 
 As shown at the end of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
-We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC, in particular we used the following commands outside Docker and than copied the necessary files inside the container:
+We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC (using a domain name we owned), in particular we used the following commands outside Docker and than copied the necessary files inside the container:
 
 ```bash
 sudo certbot -d localhost.dprojects.it --preferred-challenge dns certonly
@@ -245,7 +245,7 @@ As shown in the image above, the router has 3 interfaces: one for each LAN and o
 | Router | eth2      | 192.168.2.1 | 2      |
 | Server | eth1      | 192.168.2.2 | 2      |
 
-Obviously both hosts have an `eth0` interface in order to connect to the Vagrant management.
+Obviously both hosts have an `eth0` interface in order to connect to the Vagrant Management.
 
 ## Performance evaluation ⏱
 
