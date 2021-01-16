@@ -55,7 +55,7 @@ In order to simplify the task of creating 6 different configurations for each in
 | Web page        | HTTP/3 + QUIC | 192.168.2.2 | 85, 455 |
 | Video streaming | HTTP/3 + QUIC | 192.168.2.2 | 86, 456 |
 
-As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. The ports from 81 to 85 will forward the port 80 from the container, while the ports from 451 to 456 will forward the port 443 from the container.
+As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. The ports from 81 to 85 will forward the port 80 from the container, while the ports from 451 to 456 will forward the port 443 from the container (by the way, these parameter can be modified with ease in the `docker_deploy.sh` script).
 
 #### Creation 🧱
 
@@ -214,15 +214,9 @@ http {
 }
 ```
 
-The last mod we did to the base configuration was to automatically execute the ffmpeg video streaming (without typing every time the following command):
-
-```bash
-ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
-```
-
 #### Deployment 🚀
 
-In order to build and run all the docker instances discussed earlier, we found convenient creating a bash script that will docker-build all the images and then docker-run all the containers. Said script can be found in the `Docker` folder and it is called `docker_deploy.sh`
+In order to build and run all the docker instances discussed earlier, we found convenient creating a bash script that will docker-build all the images and then docker-run all the containers. Said script can be found in the `Docker` folder and it is called `docker_deploy.sh`. In order to start easily the video streaming feature, we created a bash script, called `start_streaming.sh`, located in the `docker` folder.
 
 ### Network configuration 🌍
 
