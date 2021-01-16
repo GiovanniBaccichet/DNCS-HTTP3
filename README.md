@@ -48,16 +48,16 @@ As shown in the image above, we decided to create 2 VMs: one for the client that
 
 In order to simplify the task of creating 6 different configurations for each instance that we want to test, we decided to use docker, setting up 2 different images (one for the web page, the other one for the video streaming) that will be slightly modified to use TCP only, HTTP/2 only or HTTP/3 w/ QUIC only.
 
-| Service         | Protocol      | IP address  | Port |
-| --------------- | ------------- | ----------- | ---- |
-| Web page        | TCP           | 192.168.2.2 | 81   |
-| Video streaming | TCP           | 192.168.2.2 | 82   |
-| Web page        | HTTP/2        | 192.168.2.2 | 83   |
-| Video streaming | HTTP/2        | 192.168.2.2 | 84   |
-| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 85   |
-| Video streaming | HTTP/3 + QUIC | 192.168.2.2 | 86   |
+| Service         | Protocol      | IP address  | Ports   |
+| --------------- | ------------- | ----------- | ------- |
+| Web page        | TCP           | 192.168.2.2 | 81, 451 |
+| Video streaming | TCP           | 192.168.2.2 | 82, 452 |
+| Web page        | HTTP/2        | 192.168.2.2 | 83, 453 |
+| Video streaming | HTTP/2        | 192.168.2.2 | 84, 454 |
+| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 85, 455 |
+| Video streaming | HTTP/3 + QUIC | 192.168.2.2 | 86, 456 |
 
-As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. We used ports from 80 to 85 for differentiating each instance.
+As shown in the table above, the IP address is the same across all the Docker instances, begin executed by the same VM. The ports from 81 to 85 will forward the port 80 from the container, while the ports from 451 to 456 will forward the port 443 from the container.
 
 #### Creation 🧱
 
