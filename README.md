@@ -140,7 +140,7 @@ http {
 ##### SSL Certificate 🔐
 
 As shown at the end of the configuration file, TLS encryption is needed to use the HTTP/3 modded version of NGINX. We did a little bit of research and found out that we couldn't use self-signed SSL certificates with QUIC. Only trusted SSL certificates issued by a CA work.
-We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC (using a domain name we owned), in particular we used the following commands outside Docker and than copied the necessary files inside the container:
+We used Let's Encrypt for generating a valid SSL/ TLS certificate that works with QUIC (using a domain name we owned and redirecting to `127.0.0.1`), in particular we used the following commands outside Docker and than copied the necessary files inside the container:
 
 ```bash
 sudo certbot -d localhost.dprojects.it --preferred-challenge dns certonly
