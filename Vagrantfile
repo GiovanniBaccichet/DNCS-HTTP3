@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
     vb.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
     vb.customize ["modifyvm", :id, "--nicpromisc5", "allow-all"]
-    vb.cpus = 1
+    vb.cpus = 2
   end
 
   # ROUTER
@@ -49,10 +49,10 @@ Vagrant.configure("2") do |config|
     server.vm.hostname = "server"
     server.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     server.vm.provision "shell", path: "vagrant/server.sh"
-    server.vm.provision "shell", path: "sudo docker/docker_deploy_vagrant.sh"
-    server.vm.provision "shell", path: "sudo docker/start_streaming.sh"
+    server.vm.provision "shell", path: "docker/docker_deploy.sh", privileged: true
+    server.vm.provision "shell", path: "docker/start_streaming.sh", privileged: true
     server.vm.provider "virtualbox" do |vb|
-    vb.memory = 1024
+    vb.memory = 512
     end
   end
 end
