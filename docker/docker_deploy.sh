@@ -80,16 +80,3 @@ docker run --name http3-text -d -p $h3TEXTp1:80 -p $h3TEXTp2:443/tcp -p $h3TEXTp
 
 echo "[HTTP/3]: Video streaming"
 docker run --name http3-video -d -p $h3VIDEOp1:80 -p $h3VIDEOp2:443/tcp -p $h3VIDEOp2:443/udp -v $PWD/confs/http3.video.nginx.conf:/etc/nginx/nginx.conf quiche-video
-
-echo "+----------------------------------------------------------------------------------------------------------------------------------+"
-echo "|                                                        CONFIGURING NGINX                                                         |"
-echo "+----------------------------------------------------------------------------------------------------------------------------------+"
-
-echo "[TCP]: Video streaming"
-docker exec -d tcp-video nginx -s reload
-
-echo "[HTTP/2]: Video streaming"
-docker exec -d http2-video nginx -s reload
-
-echo "[HTTP/3]: Video streaming"
-docker exec -d http3-video nginx -s reload
