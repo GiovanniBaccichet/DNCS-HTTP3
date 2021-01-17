@@ -82,14 +82,14 @@ echo "[HTTP/3]: Video streaming"
 docker run --name http3-video -d -p $h3VIDEOp1:80 -p $h3VIDEOp2:443/tcp -p $h3VIDEOp2:443/udp -v $PWD/confs/http3.video.nginx.conf:/etc/nginx/nginx.conf quiche-video
 
 echo "+----------------------------------------------------------------------------------------------------------------------------------+"
-echo "|                                                    STARTING VIDEO STREAMING                                                      |"
+echo "|                                                        CONFIGURING NGINX                                                         |"
 echo "+----------------------------------------------------------------------------------------------------------------------------------+"
 
 echo "[TCP]: Video streaming"
-docker exec -d tcp-video ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
+docker exec -d tcp-video nginx -s reload
 
 echo "[HTTP/2]: Video streaming"
-docker exec -d http2-video ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
+docker exec -d http2-video nginx -s reload
 
 echo "[HTTP/3]: Video streaming"
-docker exec -d http3-video ffmpeg -re -stream_loop -1 -i /root/big_buck_bunny_720p_10mb.mp4 -vcodec libx264 -vprofile baseline -g 30 -acodec aac -strict -2 -loop -10 -f flv rtmp://localhost/show/stream
+docker exec -d http3-video nginx -s reload
