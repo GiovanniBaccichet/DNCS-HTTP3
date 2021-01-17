@@ -22,8 +22,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "router" do |router|
     router.vm.box = "ubuntu/bionic64"
     router.vm.hostname = "router"
-    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-south", auto_config: false
-    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-inter", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     router.vm.provision "shell", path: "vagrant/router.sh"
     router.vm.provider "virtualbox" do |vb|
     vb.memory = 256
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "client" do |client|
     client.vm.box = "ubuntu/bionic64"
     client.vm.hostname = "client"
-    client.vm.network "private_network", virtualbox__intnet: "broadcast_client", auto_config: false
+    client.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
     client.vm.provision "shell", path: "vagrant/client.sh"
     client.vm.provider "virtualbox" do |vb|
     vb.memory = 256
@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "server" do |server|
     server.vm.box = "ubuntu/bionic64"
     server.vm.hostname = "server"
-    server.vm.network "private_network", virtualbox__intnet: "broadcast_server", auto_config: false
+    server.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     server.vm.provision "shell", path: "vagrant/server.sh"
     server.vm.provider "virtualbox" do |vb|
     vb.memory = 1024
