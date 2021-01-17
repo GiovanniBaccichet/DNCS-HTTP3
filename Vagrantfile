@@ -49,8 +49,7 @@ Vagrant.configure("2") do |config|
     server.vm.hostname = "server"
     server.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     server.vm.provision "shell", path: "vagrant/server.sh"
-    server.vm.provision "shell", path: "docker/docker_deploy.sh"
-    server.vm.provision "shell", path: "docker/start_streaming.sh"
+    server.vm.provision "shell", path: "vagrant/docker_run.sh"
     server.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
     end
