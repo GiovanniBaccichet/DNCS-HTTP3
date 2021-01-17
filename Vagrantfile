@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
     router.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     router.vm.provision "shell", path: "vagrant/router.sh"
     router.vm.provider "virtualbox" do |vb|
-    vb.memory = 256
+      vb.memory = 256
     end
   end
 
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
     client.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
     client.vm.provision "shell", path: "vagrant/client.sh"
     client.vm.provider "virtualbox" do |vb|
-    vb.memory = 256
+      vb.memory = 256
     end
   end
 
@@ -49,10 +49,11 @@ Vagrant.configure("2") do |config|
     server.vm.hostname = "server"
     server.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
     server.vm.provision "shell", path: "vagrant/server.sh"
-    server.vm.provision "shell", path: "docker/docker_deploy.sh", privileged: true
-    server.vm.provision "shell", path: "docker/start_streaming.sh", privileged: true
+    server.vm.provision "shell", path: "docker/docker_deploy.sh"
+    server.vm.provision "shell", path: "docker/start_streaming.sh"
     server.vm.provider "virtualbox" do |vb|
-    vb.memory = 512
+      vb.memory = 2048
     end
   end
+
 end
