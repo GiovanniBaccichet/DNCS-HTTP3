@@ -36,7 +36,7 @@ The first host will be the client used for the performance evaluation, while the
 
 Every instance of the 6 described above will run in the same host, in a separate Docker image, using a different port.
 
-<img src="Network-topology.png" width="1000">
+<img src="imgs/Network-topology.png" width="1000">
 
 ## Vagrant configuration 🖥
 
@@ -234,11 +234,13 @@ Obviously both hosts have an `eth0` interface in order to connect to the Vagrant
 
 ## Performance evaluation ⏱
 
-aaa
+We wanted the performance evaluation process to be as unbiased as possible, so we proceeded to create (as shown earlier) a virtualized lab. As we will discuss later, we decided to adopt different 2 different evaluation criteria: the first one for measuring the web-page performance in all the scenarios, whereas the last one for measuring the performance of video streaming across all different protocols.
 
 ### Evaluation criteria ⚖️
 
-aaa
+<img src="imgs/google-lighthouse.png" width="80">
+
+For the web-page performance evaluation we decided to rely on Google's software: so we proceeded to install NodeJS on the client-VM, using Lighthouse for auditing and extracting performance metrics. In particular we were interested in [...].
 
 ## Results 🧾
 
