@@ -238,7 +238,7 @@ We wanted the performance evaluation process to be as unbiased as possible, so w
 
 ### Evaluation criteria ⚖️
 
-<img src="imgs/google-lighthouse.png" width="80">
+<img align="right" src="imgs/google-lighthouse.png" width="80">
 
 For the web-page performance evaluation we decided to rely on Google's software: so we proceeded to install NodeJS on the client-VM, using Lighthouse for auditing and extracting performance metrics. In particular we were interested in [...].
 
