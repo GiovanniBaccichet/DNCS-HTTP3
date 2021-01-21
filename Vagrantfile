@@ -7,6 +7,8 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   config.vm.box_check_update = false
+  config.ssh.forward_agent = true
+  config.ssh.forward_x11 = true
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--usb", "on"]
     vb.customize ["modifyvm", :id, "--usbehci", "off"]
@@ -38,7 +40,7 @@ Vagrant.configure("2") do |config|
     client.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
     client.vm.provision "shell", path: "vagrant/client.sh"
     client.vm.provider "virtualbox" do |vb|
-      vb.memory = 256
+      vb.memory = 1024
     end
   end
 
@@ -51,7 +53,7 @@ Vagrant.configure("2") do |config|
     server.vm.provision "shell", path: "vagrant/server.sh"
     server.vm.provision "shell", path: "vagrant/docker_run.sh"
     server.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
+      vb.memory = 1024
     end
   end
 
