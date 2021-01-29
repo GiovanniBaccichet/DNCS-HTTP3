@@ -1,5 +1,6 @@
 .vagrant
 .vscode
 .DS_Store
+*.pem
 notes
 ubuntu-bionic-18.04-cloudimg-console.log

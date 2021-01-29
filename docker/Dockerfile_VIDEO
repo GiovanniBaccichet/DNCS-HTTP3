@@ -39,16 +39,13 @@ RUN curl -O https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz && \
     --with-openssl=../quiche/deps/boringssl \
     --with-quiche=../quiche && \
     make && \
-    make install && \
-    cd / && \
-    git clone https://github.com/GiovanniBaccichet/DNCS-HTTP3;
+    make install;
 
 FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
 COPY --from=builder /opt/big_buck_bunny_720p_10mb.mp4 /root/big_buck_bunny_720p_10mb.mp4
-COPY --from=builder /DNCS-HTTP3/docker/certs/ /etc/nginx/
 
 RUN groupadd  nginx \
     && useradd -m -d  /var/cache/nginx -s /sbin/nologin -g nginx nginx \

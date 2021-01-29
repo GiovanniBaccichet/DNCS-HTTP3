@@ -53,7 +53,7 @@ Vagrant.configure("2") do |config|
     client.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
     client.vm.provision "shell", path: "vagrant/client.sh"
     client.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
+      vb.memory = 1024
     end
   end
 
