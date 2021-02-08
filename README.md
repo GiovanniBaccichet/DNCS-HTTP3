@@ -78,10 +78,10 @@ For the performance evaluation to be likely realistic, it would have to include 
 | --------------- | ------------- | ----------- | ------- |
 | Web page        | TCP           | 192.168.2.2 | 81, 451 |
 | Web page        | HTTP/2        | 192.168.2.2 | 82, 452 |
-| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 83, 453 |
-| Video streaming | TCP           | 192.168.2.2 | 84, 454 |
-| Video streaming | HTTP/2        | 192.168.2.2 | 85, 455 |
-| Video streaming | HTTP/3 + QUIC | 192.168.2.2 | 86, 456 |
+| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 80, 443 |
+| Video streaming | TCP           | 192.168.2.3 | 84, 454 |
+| Video streaming | HTTP/2        | 192.168.2.3 | 85, 455 |
+| Video streaming | HTTP/3 + QUIC | 192.168.2.3 | 80, 443 |
 
 Regarding the IP addresses assigned by Vagrant to the different hosts, they are the following: `router::eth1` is `192.168.1.1`, `router::eth2` is `192.168.2.1`, `client::eth1` is `192.168.1.2` and `server::eth2` is `192.168.2.2`.
 
