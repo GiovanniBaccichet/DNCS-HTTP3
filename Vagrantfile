@@ -25,22 +25,36 @@ Vagrant.configure("2") do |config|
     router.vm.box = "ubuntu/bionic64"
     router.vm.hostname = "router"
     router.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
-    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-web-server", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-video-server", auto_config: false
     router.vm.provision "shell", path: "vagrant/router.sh"
     router.vm.provider "virtualbox" do |vb|
       vb.memory = 256
     end
   end
 
-  # HOST: SERVER
+  # HOST: WEB-SERVER
 
-  config.vm.define "server" do |server|
-    server.vm.box = "ubuntu/bionic64"
-    server.vm.hostname = "server"
-    server.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
-    server.vm.provision "shell", path: "vagrant/server.sh"
-    server.vm.provision "shell", path: "vagrant/docker_run.sh"
-    server.vm.provider "virtualbox" do |vb|
+  config.vm.define "web-server" do |webserver|
+    webserver.vm.box = "ubuntu/bionic64"
+    webserver.vm.hostname = "server"
+    webserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-web-server", auto_config: false
+    webserver.vm.provision "shell", path: "vagrant/server.sh"
+    webserver.vm.provision "shell", path: "vagrant/web-docker_run.sh"
+    webserver.vm.provider "virtualbox" do |vb|
+      vb.memory = 256
+    end
+  end
+
+  # HOST: VIDEO-SERVER
+
+  config.vm.define "video-server" do |videoserver|
+    videoserver.vm.box = "ubuntu/bionic64"
+    videoserver.vm.hostname = "server"
+    videoserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
+    videoserver.vm.provision "shell", path: "vagrant/server.sh"
+    videoserver.vm.provision "shell", path: "vagrant/video-docker_run.sh"
+    videoserver.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
     end
   end
