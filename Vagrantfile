@@ -37,9 +37,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "web-server" do |webserver|
     webserver.vm.box = "ubuntu/bionic64"
-    webserver.vm.hostname = "server"
+    webserver.vm.hostname = "web-server"
     webserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-web-server", auto_config: false
-    webserver.vm.provision "shell", path: "vagrant/server.sh"
+    webserver.vm.provision "shell", path: "vagrant/web-server.sh"
     webserver.vm.provision "shell", path: "vagrant/web-docker_run.sh"
     webserver.vm.provider "virtualbox" do |vb|
       vb.memory = 256
@@ -50,9 +50,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "video-server" do |videoserver|
     videoserver.vm.box = "ubuntu/bionic64"
-    videoserver.vm.hostname = "server"
+    videoserver.vm.hostname = "video-server"
     videoserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
-    videoserver.vm.provision "shell", path: "vagrant/server.sh"
+    videoserver.vm.provision "shell", path: "vagrant/video-server.sh"
     videoserver.vm.provision "shell", path: "vagrant/video-docker_run.sh"
     videoserver.vm.provider "virtualbox" do |vb|
       vb.memory = 1024
