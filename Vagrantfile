@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "video-server" do |videoserver|
     videoserver.vm.box = "ubuntu/bionic64"
     videoserver.vm.hostname = "video-server"
-    videoserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-server", auto_config: false
+    videoserver.vm.network "private_network", virtualbox__intnet: "broadcast_router-video-server", auto_config: false
     videoserver.vm.provision "shell", path: "vagrant/video-server.sh"
     videoserver.vm.provision "shell", path: "vagrant/video-docker_run.sh"
     videoserver.vm.provider "virtualbox" do |vb|
@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
     client.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
     client.vm.provision "shell", path: "vagrant/client.sh"
     client.vm.provider "virtualbox" do |vb|
-      vb.memory = 1024
+      vb.memory = 2048
     end
   end
 
