@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
     webserver.vm.provision "shell", path: "vagrant/web-server.sh"
     webserver.vm.provision "shell", path: "vagrant/web-docker_run.sh"
     webserver.vm.provider "virtualbox" do |vb|
-      vb.memory = 256
+      vb.memory = 512
     end
   end
 
