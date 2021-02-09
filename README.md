@@ -110,7 +110,7 @@ Since QUIC needs encryption in order to work properly, SSL/TLS certificates had 
 Let's Encrypt can be used to generate valid certificated, associated with a real domain. Using certbot and DNS verification, the command is the following:
 
 ```bash
-sudo certbot -d HOSTNAME --preferred-challenge dns certonly
+sudo certbot -d HOSTNAME --manual --preferred-challenges dns certonly
 ```
 
 And the files needed for NGINX can be found in `/etc/letsencrypt/live/HOSTNAME`.
