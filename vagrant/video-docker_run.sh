@@ -51,13 +51,13 @@ echo "|                                                       RUNNING CONTAINERS
 echo "+----------------------------------------------------------------------------------------------------------------------------------+"
 
 echo "[TCP]: Video streaming"
-sudo docker run --name tcp-video -d -p $h1VIDEOp1:80 -p $h1VIDEOp2:443/tcp -p $h1VIDEOp2:443/udp -v $vagrantPath/confs/tcp.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/ giovannibaccichet/quiche-video
+sudo docker run --name tcp-video -d -p $h1VIDEOp1:80 -p $h1VIDEOp2:443/tcp -p $h1VIDEOp2:443/udp -v $vagrantPath/confs/tcp.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/certs/ giovannibaccichet/quiche-video
 
 echo "[HTTP/2]: Video streaming"
-sudo docker run --name http2-video -d -p $h2VIDEOp1:80 -p $h2VIDEOp2:443/tcp -p $h2VIDEOp2:443/udp -v $vagrantPath/confs/http2.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/ giovannibaccichet/quiche-video
+sudo docker run --name http2-video -d -p $h2VIDEOp1:80 -p $h2VIDEOp2:443/tcp -p $h2VIDEOp2:443/udp -v $vagrantPath/confs/http2.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/certs/ giovannibaccichet/quiche-video
 
 echo "[HTTP/3]: Video streaming"
-sudo docker run --name http3-video -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $vagrantPath/confs/http3.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/ giovannibaccichet/quiche-video
+sudo docker run --name http3-video -d -p 80:80 -p 443:443/tcp -p 443:443/udp -v $vagrantPath/confs/http3.video.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/video/:/etc/nginx/certs/ giovannibaccichet/quiche-video
 
 echo "+----------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                    STARTING VIDEO STREAMING                                                      |"
