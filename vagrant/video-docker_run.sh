@@ -41,9 +41,6 @@ echo -e "[TCP_VIDEO]\t Port 1:\t" $h1VIDEOp1
 echo -e "[TCP_VIDEO]\t Port 2:\t" $h1VIDEOp2
 echo -e "[HTTP/2_VIDEO]\t Port 1:\t" $h2VIDEOp1
 echo -e "[HTTP/2_VIDEO]\t Port 2:\t" $h2VIDEOp2
-echo -e "[HTTP/3_VIDEO]\t Port 1:\t" $h3VIDEOp1
-echo -e "[HTTP/3_VIDEO]\t Port 2:\t" $h3VIDEOp2
-
 
 # DOCKER RUN
 echo "+----------------------------------------------------------------------------------------------------------------------------------+"

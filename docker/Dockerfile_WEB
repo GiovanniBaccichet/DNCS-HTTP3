@@ -40,7 +40,7 @@ FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
-COPY --from=builder /opt/index.html/ /etc/nginx/
+COPY --from=builder /opt/index.html/ /etc/nginx/html/
 
 RUN groupadd  nginx \
     && useradd -m -d  /var/cache/nginx -s /sbin/nologin -g nginx nginx \
