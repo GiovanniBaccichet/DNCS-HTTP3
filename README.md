@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/GiovanniBaccichet/DNCS-HTTP3">
-    <img src="imgs/isometric_servers.png" alt="Logo" width="200" height="200"> 
+    <img src="media/isometric_servers.png" alt="Logo" width="200" height="200"> 
   </a>
 
   <h3 align="center">Performance Evaluation of HTTP/3 w/ QUIC</h3>
@@ -73,7 +73,7 @@ The goal of the project is to build a virtualized framework for analyzing the pe
 In order to be as unbiased as possibile, and also to make the performance evaluation replicable by everyone, it is necessary a virtualized lab. More specifically, in the implementation chosen, two softwares are used to set up the environment: **Docker** and **Vagrant**.
 In order to replicate a realistic scenario, the setup will be the following: 2 hosts are connected to the same router, but they both belong to different subnets, all of which will be managed by Vagrant. The fist host will be named `client`, and on top of it will run the software needed for the performance evaluation (that will be discussed in a dedicated section). On the other hand, the second host will be called `server` and will run 6 different Docker containers.
 
-<img src="imgs/Network-topology.png" width="1000">
+<img src="media/Network-topology.png" width="1000">
 
 For the performance evaluation to be likely realistic, it would have to include both web-page static contents and also video streaming (the most popular medium nowadays). Hence the need of 6 different Docker containers: `(3 protocols to be tested) X (2 kinds of media)`. As said, all containers will run on top of the same host, and so they will have the same IP address. To differentiate one container from the other port forwarding is necessary. The Lab's port configuration is summarized in the table below.
 
