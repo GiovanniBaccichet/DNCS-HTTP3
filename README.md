@@ -293,7 +293,7 @@ The whole performance evaluation was done using the latest stable version of **G
 google-chrome --enable-quic --quic-version=h3-27
 ```
 
-It has been use the version 27 (and not 29) of HTTP/3 with compatibility issues in mind.
+The HTTP/3 version used was 27 and not 29 because of Google Chrome possible compatibility issues (the setting can be changed modifying the files in `docker/confs` folder).
 For the web-page static content performance evaluation a reliable tool can be Google's **Lighthouse for Google Chrome**, while for some streaming statistics were used online players with data (that will be discussed below).
 
 ### Evaluation Criteria
@@ -303,4 +303,7 @@ For the web-page static content performance evaluation a reliable tool can be Go
 ## Credits 📓
 
 The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the Blender Foundation the Creative Commons Attribution 3.0 license. In this specific case, the file in the `media` folder has been cut and compressed in order to save space.
-`(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org`
+
+```
+(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org
+```
