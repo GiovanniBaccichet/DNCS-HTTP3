@@ -25,10 +25,23 @@ Vagrant.configure("2") do |config|
     router.vm.box = "ubuntu/bionic64"
     router.vm.hostname = "router"
     router.vm.network "private_network", virtualbox__intnet: "broadcast_router-client", auto_config: false
-    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-web-server", auto_config: false
-    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-video-server", auto_config: false
+    router.vm.network "private_network", virtualbox__intnet: "broadcast_router-switch", auto_config: false
     router.vm.provision "shell", path: "vagrant/router.sh"
     router.vm.provider "virtualbox" do |vb|
+      vb.memory = 256
+    end
+  end
+
+  # SWITCH
+
+  config.vm.define "switch" do |switch|
+    switch.vm.box = "ubuntu/bionic64"
+    switch.vm.hostname = "switch"
+    switch.vm.network "private_network", virtualbox__intnet: "broadcast_router-switch", auto_config: false
+    switch.vm.network "private_network", virtualbox__intnet: "broadcast_router-web-server", auto_config: false
+    switch.vm.network "private_network", virtualbox__intnet: "broadcast_router-video-server", auto_config: false
+    switch.vm.provision "shell", path: "vagrant/switch.sh"
+    switch.vm.provider "virtualbox" do |vb|
       vb.memory = 256
     end
   end
