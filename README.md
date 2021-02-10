@@ -48,7 +48,7 @@
         <li><a href="#results">Results</a></li>
     </ul>
     <li>
-      <a href="#lab-environment---">Credits 📓</a>
+      <a href="credits---">Credits 📓</a>
     </li>
   </ol>
 </details>
@@ -264,13 +264,37 @@ h2TEXTp1=81
 h2TEXTp2=451
 ```
 
-While for using custom generated SSL/TLS certificates, it is necessary to change the path to the needed certificates in `web-docker_run.sh` and `video-docker_run.sh`
+While for using custom generated SSL/TLS certificates, it is necessary to change the path to the needed certificates in `web-docker_run.sh` and `video-docker_run.sh`.
 
 ```bash
 sudo docker run --name tcp-web -d -p $h1WEBp1:80 -p $h1WEBp2:443/tcp -p $h1WEBp2:443/udp -v $vagrantPath/confs/tcp.web.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/web/:/etc/nginx/certs/ giovannibaccichet/quiche-web
 ```
 
+Alternatively it is necessary to clone the repo and replicate the following folder tree (replacing `fullchain.pem` and `privkey.pem` with the respective custom certificates):
+
+```
+.
+└── DNCS-HTTP3/
+    └── docker/
+        └── certs/
+            ├── video/
+            │   ├── fullchain.pem
+            │   └── privkey.pem
+            └── web/
+                ├── fullchain.pem
+                └── privkey.pem
+```
+
 ## Performance Evaluation ⏱
+
+The whole performance evaluation was done using the latest stable version of **Google Chrome** (`v 88.0.4324.150`) from the `client`. In order to enable HTTP/3 and QUIC the application has to be launched with the following command:
+
+```bash
+google-chrome --enable-quic --quic-version=h3-27
+```
+
+It has been use the version 27 (and not 29) of HTTP/3 with compatibility issues in mind.
+For the web-page static content performance evaluation a reliable tool can be Google's **Lighthouse for Google Chrome**, while for some streaming statistics were used online players with data (that will be discussed below).
 
 ### Evaluation Criteria
 
