@@ -304,7 +304,7 @@ For the web-page static content performance evaluation a reliable tool can be Go
 
 The website used for the web-static contents performance evaluation was made using [Froala Design Blocks](https://github.com/froala/design-blocks), in order to get an easy to make, good looking and realistic web page to analyze.
 
-The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the Blender Foundation the Creative Commons Attribution 3.0 license. In this specific case, the file in the `media` folder has been cut and compressed in order to save space.
+The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the [Blender Foundation](https://www.blender.org/foundation/) the Creative Commons Attribution 3.0 license. In this specific case, the file in the `media` folder has been cut and compressed in order to save space.
 
 ```
 (c) copyright 2008, Blender Foundation / www.bigbuckbunny.org
