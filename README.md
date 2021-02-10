@@ -46,7 +46,10 @@
     <ul>
         <li><a href="#evaluation-criteria">Evaluation Criteria</a></li>
         <li><a href="#results">Results</a></li>
-      </ul>
+    </ul>
+    <li>
+      <a href="#lab-environment---">Credits 📓</a>
+    </li>
   </ol>
 </details>
 
@@ -286,3 +289,8 @@ Replacing `CERTIFICATES_PATH` with the path of the custom ones.
 ### Evaluation Criteria
 
 ### Results
+
+## Credits 📓
+
+The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the Blender Foundation the Creative Commons Attribution 3.0 license.
+`(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org`
