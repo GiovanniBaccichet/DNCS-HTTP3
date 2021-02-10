@@ -139,7 +139,7 @@ http {
         # Enable HTTP/2 (optional).
         listen 443 ssl http2;
 
-        server_name localhost.bacci.dev;
+        server_name web.bacci.dev;
 
         # Certificates generated for localhost.bacci.dev
         ssl_certificate certs/fullchain.pem;
@@ -204,7 +204,7 @@ http {
 
         listen 443 ssl http2;
 
-        server_name localhost.bacci.dev;
+        server_name video.bacci.dev;
 
         ssl_certificate certs/fullchain.pem;
         ssl_certificate_key certs/privkey.pem;
@@ -292,5 +292,5 @@ Replacing `CERTIFICATES_PATH` with the path of the custom ones.
 
 ## Credits 📓
 
-The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the Blender Foundation the Creative Commons Attribution 3.0 license.
+The video streamed using **ffmpeg** in the video server is named Big Buck Bunny and it is a 2008 libre movie project by the Blender Foundation the Creative Commons Attribution 3.0 license. In this specific case, the file in the `media` folder has been cut and compressed in order to save space.
 `(c) copyright 2008, Blender Foundation / www.bigbuckbunny.org`
