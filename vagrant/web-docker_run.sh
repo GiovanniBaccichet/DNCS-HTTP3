@@ -30,11 +30,11 @@ echo "+-------------------------------------------------------------------------
 
 # SET PORTS
 # TCP web
-h1WEBp1=81
-h1WEBp2=451
+h1WEBp1=82
+h1WEBp2=452
 # HTTP/2 web
-h2WEBp1=83
-h2WEBp2=453
+h2WEBp1=81
+h2WEBp2=451
 
 # PRINT PORTS
 echo -e "[TCP_WEB]\t Port 1:\t" $h1WEBp1

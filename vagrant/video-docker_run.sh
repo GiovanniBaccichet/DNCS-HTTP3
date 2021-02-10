@@ -33,8 +33,8 @@ echo "+-------------------------------------------------------------------------
 h1VIDEOp1=82
 h1VIDEOp2=452
 # HTTP/2 video
-h2VIDEOp1=84
-h2VIDEOp2=454
+h2VIDEOp1=81
+h2VIDEOp2=451
 
 # PRINT PORTS
 echo -e "[TCP_VIDEO]\t Port 1:\t" $h1VIDEOp1

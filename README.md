@@ -71,27 +71,27 @@ The goal of the project is to build a virtualized framework for analyzing the pe
 ## Lab Environment 🌍
 
 In order to be as unbiased as possibile, and also to make the performance evaluation replicable by everyone, it is necessary a virtualized lab. More specifically, in the implementation chosen, two softwares are used to set up the environment: **Docker** and **Vagrant**.
-In order to replicate a realistic scenario, the setup will be the following: 2 hosts are connected to the same router, but they both belong to different subnets, all of which will be managed by Vagrant. The fist host will be named `client`, and on top of it will run the software needed for the performance evaluation (that will be discussed in a dedicated section). On the other hand, the second host will be called `server` and will run 6 different Docker containers.
+In order to replicate a realistic scenario, the setup will be the following: one host, used as a client is connected directly to the only router of the lab. Than there are 2 hosts used as servers and belonging to the same subnet (different from the client one) connected to a switch and so to the router. The fist host will be named `client`, and on top of it will run the software needed for the performance evaluation (that will be discussed in a dedicated section). On the other hand, the second host will be called `web-server` and will run 3 different Docker containers and similarly the last one will be called `video-server` and it will run the remaining 3 containers.
 
 <img src="media/Network-topology.png" width="1000">
 
-For the performance evaluation to be likely realistic, it would have to include both web-page static contents and also video streaming (the most popular medium nowadays). Hence the need of 6 different Docker containers: `(3 protocols to be tested) X (2 kinds of media)`. As said, all containers will run on top of the same host, and so they will have the same IP address. To differentiate one container from the other port forwarding is necessary. The Lab's port configuration is summarized in the table below.
+For the performance evaluation to be likely realistic, it would have to include both web-page static contents and also video streaming (the most popular medium nowadays). Hence the need of 6 different Docker containers: `(3 protocols to be tested) X (2 kinds of media)`. The containers could run on top the same host, but for the HTTP/3+QUIC container to work, it needs to use port 80 `80` and `443`, and since there are 2 of those, it would be a problem. For this specific reason the containers are divided in 2 different hosts (one dedicated to web static contents, and the other dedicated to video streaming).
 
 | Service         | Protocol      | IP address  | Ports   |
 | --------------- | ------------- | ----------- | ------- |
-| Web page        | TCP           | 192.168.2.2 | 81, 451 |
-| Web page        | HTTP/2        | 192.168.2.2 | 82, 452 |
+| Web page        | TCP           | 192.168.2.2 | 82, 452 |
+| Web page        | HTTP/2        | 192.168.2.2 | 81, 451 |
 | Web page        | HTTP/3 + QUIC | 192.168.2.2 | 80, 443 |
-| Video streaming | TCP           | 192.168.2.3 | 84, 454 |
-| Video streaming | HTTP/2        | 192.168.2.3 | 85, 455 |
+| Video streaming | TCP           | 192.168.2.3 | 82, 452 |
+| Video streaming | HTTP/2        | 192.168.2.3 | 81, 451 |
 | Video streaming | HTTP/3 + QUIC | 192.168.2.3 | 80, 443 |
 
-Regarding the IP addresses assigned by Vagrant to the different hosts, they are the following: `router::eth1` is `192.168.1.1`, `router::eth2` is `192.168.2.1`, `client::eth1` is `192.168.1.2` and `server::eth2` is `192.168.2.2`.
+Regarding the IP addresses assigned by Vagrant to the different hosts, they are the following: `router::eth1` is `192.168.1.1`, `router::eth2` is `192.168.2.1`, `client::eth1` is `192.168.1.2` and `web-server::eth1` is `192.168.2.2` and `video-server::eth1` is `192.168.2.3`.
 
 ## Vagrant Configuration 🖥
 
 As showcased earlier, Vagrant is used to manage the VM and networking side of the Lab environment. The imaged used for the OS is `ubuntu/bionic64`.
-Some things have to be pointed out: the X11 server is forwarded in order to use performance evaluation tools and browsers form the `client`. This is achieved by adding in the Vagrantfile the following lines:
+Some things have to be pointed out: the X11 server is forwarded in order to use performance evaluation tools and browsers form the `client` (it will be necessary for the host machine to run an X-server, like XQuartz for macOS). This is achieved by adding in the Vagrantfile the following lines:
 
 ```Ruby
   config.ssh.forward_agent = true
@@ -117,7 +117,7 @@ sudo certbot -d HOSTNAME --manual --preferred-challenges dns certonly
 ```
 
 And the files needed for NGINX can be found in `/etc/letsencrypt/live/HOSTNAME`.
-It is useful to create a subdomain redirecting to `127.0.0.1` (in this case **localhost.bacci.dev**) or `192.168.2.2` (in this case **docker.bacci.dev**) associated with said certificate. This is necessary to connect to the docker containers from the host machine (`127.0.0.1`) or from the `client` inside the Vagrant environment (`192.168.2.2`, or `server` IP address), because as highlighted earlier QUIC accepts only encrypted traffic.
+It is useful to create a subdomain redirecting to `192.168.2.2` (in this case **web.bacci.dev**) or `192.168.2.3` (in this case **video.bacci.dev**) associated with said certificates. This is necessary to connect to the docker containers from the `client` inside the Vagrant environment because as highlighted earlier QUIC accepts only encrypted traffic.
 For obvious reasons the certificates used in this performance evaluation are not included in the package, however they can be generated with ease using the command above and passed to docker using the `-v` option (this will be explained in the Deployment section).
 
 ### Web Page - image
@@ -247,7 +247,7 @@ For the deployment part, there are 2 different alternatives:
 2. Launch the Lab Environment discussed earlier with the command `vagrant up`. The latest builded Docker images will be downloaded from the [Docker Hub](https://hub.docker.com/u/giovannibaccichet) and deployed automatically.
 
 Some notes have to be made: in order to change the port configuration used and the SSL/TLS certificates needed, depending on the chosen method of deployment, `docker/docker_deploy.sh` or `vagrant/docker_run.sh` have to be modified.
-All ports are parameterized, so the configuration is pretty straight forward:
+All ports are parameterized (except HTTP/3 ones, because otherwise it won't work), so the configuration is pretty straight forward:
 
 ```bash
 # DOCKER RUN PORT SETTINGS
@@ -256,33 +256,19 @@ echo "|                      PORT SETTINGS                     |"
 echo "+--------------------------------------------------------+"
 
 # SET PORTS
-# TCP text
-h1TEXTp1=81
-h1TEXTp2=451
-# TCP video
-h1VIDEOp1=82
-h1VIDEOp2=452
-# HTTP/2 text
-h2TEXTp1=83
-h2TEXTp2=453
-# HTTP/2 video
-h2VIDEOp1=84
-h2VIDEOp2=454
-# HTTP/3 text
-h3TEXTp1=85
-h3TEXTp2=455
-# HTTP/3 video
-h3VIDEOp1=86
-h3VIDEOp2=456
+# TCP text/video
+h1TEXTp1=82
+h1TEXTp2=452
+# HTTP/2 text/video
+h2TEXTp1=81
+h2TEXTp2=451
 ```
 
-While for using custom generated SSL/TLS certificates, it has to be used the following command:
+While for using custom generated SSL/TLS certificates, it is necessary to change the path to the needed certificates in `web-docker_run.sh` and `video-docker_run.sh`
 
 ```bash
-docker run --name http3-text -d -p $h3TEXTp1:80 -p $h3TEXTp2:443/tcp -p $h3TEXTp2:443/udp -v $PWD/confs/localhost/http3.text.nginx.conf:/etc/nginx/nginx.conf -v $PWD/CERTIFICATES_PATH:/etc/nginx/certs/ quiche-text
+sudo docker run --name tcp-web -d -p $h1WEBp1:80 -p $h1WEBp2:443/tcp -p $h1WEBp2:443/udp -v $vagrantPath/confs/tcp.web.nginx.conf:/etc/nginx/nginx.conf -v $vagrantPath/certs/web/:/etc/nginx/certs/ giovannibaccichet/quiche-web
 ```
-
-Replacing `CERTIFICATES_PATH` with the path of the custom ones.
 
 ## Performance Evaluation ⏱
 
