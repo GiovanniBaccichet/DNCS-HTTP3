@@ -287,7 +287,7 @@ Alternatively it is necessary to clone the repo and replicate the following fold
 
 ## Performance Evaluation ⏱
 
-The whole performance evaluation was done using the latest stable version of **Google Chrome** (`v 88.0.4324.150`) from the `client`. In order to enable HTTP/3 and QUIC the application has to be launched with the following command:
+The whole performance evaluation was done using the latest stable version of **Google Chrome** (`v 88.0.4324.150`) from the `client`, with the help of [httpstat](https://github.com/reorx/httpstat) for ease of use and visualization. In order to enable HTTP/3 and QUIC the application has to be launched with the following command:
 
 ```bash
 google-chrome --enable-quic --quic-version=h3-27
@@ -299,8 +299,122 @@ For the web-page static content performance evaluation a reliable tool can be Go
 ### Evaluation Criteria
 
 Two different evaluation methodologies were applied to the web-static content and the video streaming.
+The performance metrics used for the first one are:
+
+-   **TTFB** (_Time To First Byte_): it measures the duration from the user or client making an HTTP request to the first byte of the page being received by the client's browser. This time is made up of the socket connection time, the time taken to send the HTTP request, and the time taken to get the first byte of the page;
+-   **Page weight**: total weight of a single page assets, including HTML, CSS, JS, images, etc. (obviously independent from the infrastructure used);
+-   **Load Time**;
+-   **Number of requests**: how many times that the browser has to request assets and resources in order to complete the loading of the requested page;
+-   **TCP connection time**;
+-   **TLS handshake time**;
+-   **Server processing time**;
+-   **Content transfer time**.
+
+Whereas the performance metrics used for the latter are:
+
+[LIST]
 
 ### Results
+
+#### Web page performance
+
+In order to have a brief overview of what has to be expected, **httpstat**'s output is very useful.
+
+_HTTP/3 + QUIC web page_:
+
+```bash
+vagrant@client:~$ httpstat https://web.bacci.dev:443
+Connected to 192.168.2.2:443 from 192.168.1.2:60864
+
+HTTP/2 200
+server: nginx/1.16.1
+date: Thu, 11 Feb 2021 13:19:49 GMT
+content-type: text/html
+content-length: 106200
+last-modified: Thu, 11 Feb 2021 11:30:40 GMT
+etag: "60251560-19ed8"
+alt-svc: h3-27=":443"; ma=86400
+accept-ranges: bytes
+
+Body stored in: /tmp/tmp1G1tZP
+
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+[     4ms    |       2ms      |     17ms      |        2ms        |        8ms       ]
+             |                |               |                   |                  |
+    namelookup:4ms            |               |                   |                  |
+                        connect:6ms           |                   |                  |
+                                    pretransfer:23ms              |                  |
+                                                      starttransfer:25ms             |
+                                                                                 total:33ms
+```
+
+To be noticed that in this case the request is `h3-27` but the response is HTTP/2, but it is not that important since all the metrics will be re-analyzed later with Google Chrome's developer tools (using HTTP/3).
+
+_HTTP/2 + SSL web page_:
+
+```bash
+vagrant@client:~$ httpstat https://web.bacci.dev:451
+Connected to 192.168.2.2:451 from 192.168.1.2:43398
+
+HTTP/2 200
+server: nginx/1.16.1
+date: Thu, 11 Feb 2021 13:19:55 GMT
+content-type: text/html
+content-length: 106200
+last-modified: Thu, 11 Feb 2021 11:30:40 GMT
+etag: "60251560-19ed8"
+accept-ranges: bytes
+
+Body stored in: /tmp/tmp7A0ND6
+
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+[     4ms    |       1ms      |     14ms      |        3ms        |        6ms       ]
+             |                |               |                   |                  |
+    namelookup:4ms            |               |                   |                  |
+                        connect:5ms           |                   |                  |
+                                    pretransfer:19ms              |                  |
+                                                      starttransfer:22ms             |
+                                                                                 total:28ms
+```
+
+_TCP + SSL web page_:
+
+```bash
+vagrant@client:~$ httpstat https://web.bacci.dev:452
+Connected to 192.168.2.2:452 from 192.168.1.2:32988
+
+HTTP/1.1 200 OK
+Server: nginx/1.16.1
+Date: Thu, 11 Feb 2021 13:43:43 GMT
+Content-Type: text/html
+Content-Length: 106200
+Last-Modified: Thu, 11 Feb 2021 11:30:40 GMT
+Connection: keep-alive
+ETag: "60251560-19ed8"
+Accept-Ranges: bytes
+
+Body stored in: /tmp/tmphG9UJe
+
+  DNS Lookup   TCP Connection   TLS Handshake   Server Processing   Content Transfer
+[     4ms    |       2ms      |     14ms      |        3ms        |        3ms       ]
+             |                |               |                   |                  |
+    namelookup:4ms            |               |                   |                  |
+                        connect:6ms           |                   |                  |
+                                    pretransfer:20ms              |                  |
+                                                      starttransfer:23ms             |
+                                                                                 total:26ms
+```
+
+Below is a summary table for the metrics acquired with Google Chrome:
+
+| Service         | Protocol      | IP address  | Ports   |
+| --------------- | ------------- | ----------- | ------- |
+| Web page        | TCP           | 192.168.2.2 | 82, 452 |
+| Web page        | HTTP/2        | 192.168.2.2 | 81, 451 |
+| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 80, 443 |
+| Video streaming | TCP           | 192.168.2.3 | 82, 452 |
+| Video streaming | HTTP/2        | 192.168.2.3 | 81, 451 |
+| Video streaming | HTTP/3 + QUIC | 192.168.2.3 | 80, 443 |
 
 ## Credits 📓
 
