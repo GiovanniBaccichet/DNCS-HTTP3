@@ -3,10 +3,11 @@ FROM ubuntu:18.04 AS builder
 WORKDIR /opt
 
 RUN apt-get update && \
-    apt-get install -y curl git libpcre3 libpcre3-dev zlib1g zlib1g-dev cargo golang-go build-essential cmake wget;
+    apt-get install -y curl git libpcre3 libpcre3-dev zlib1g zlib1g-dev cargo golang-go build-essential cmake wget zip;
 
 RUN curl -O https://nginx.org/download/nginx-1.16.1.tar.gz && \
-    wget https://github.com/GiovanniBaccichet/DNCS-HTTP3/raw/main/media/index.html && \
+    wget -O PE-index.zip https://github.com/GiovanniBaccichet/DNCS-HTTP3/blob/main/media/PE-index.zip\?raw\=true && \
+    unzip PE-index.zip && \
     tar xvzf nginx-1.16.1.tar.gz && \
     git clone --recursive https://github.com/cloudflare/quiche && \
     cd nginx-1.16.1 && \
@@ -40,7 +41,7 @@ FROM ubuntu:18.04
 
 COPY --from=builder /usr/sbin/nginx /usr/sbin/
 COPY --from=builder /etc/nginx/ /etc/nginx/
-COPY --from=builder /opt/index.html/ /etc/nginx/html/
+COPY --from=builder /opt/PE-index/ /etc/nginx/html/
 
 RUN groupadd  nginx \
     && useradd -m -d  /var/cache/nginx -s /sbin/nologin -g nginx nginx \
