@@ -312,7 +312,11 @@ The performance metrics used for the first one are:
 
 Whereas the performance metrics used for the latter are:
 
-[LIST]
+-   **Startup time**: total delay between a viewer pushing “play” and the first frame.;
+-   **Latency**;
+-   **Bitrate**;
+-   **Dropped frames**;
+-   **Resource download events**: segment download duration expressed in milliseconds.
 
 ### Results
 
