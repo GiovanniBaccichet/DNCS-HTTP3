@@ -298,6 +298,8 @@ For the web-page static content performance evaluation a reliable tool can be Go
 
 ### Evaluation Criteria
 
+Two different evaluation methodologies were applied to the web-static content and the video streaming.
+
 ### Results
 
 ## Credits 📓
