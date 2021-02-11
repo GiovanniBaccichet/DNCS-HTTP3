@@ -328,10 +328,8 @@ Connected to 192.168.2.2:443 from 192.168.1.2:60864
 
 HTTP/2 200
 server: nginx/1.16.1
-date: Thu, 11 Feb 2021 13:19:49 GMT
 content-type: text/html
 content-length: 106200
-last-modified: Thu, 11 Feb 2021 11:30:40 GMT
 etag: "60251560-19ed8"
 alt-svc: h3-27=":443"; ma=86400
 accept-ranges: bytes
@@ -358,10 +356,8 @@ Connected to 192.168.2.2:451 from 192.168.1.2:43398
 
 HTTP/2 200
 server: nginx/1.16.1
-date: Thu, 11 Feb 2021 13:19:55 GMT
 content-type: text/html
 content-length: 106200
-last-modified: Thu, 11 Feb 2021 11:30:40 GMT
 etag: "60251560-19ed8"
 accept-ranges: bytes
 
@@ -385,10 +381,8 @@ Connected to 192.168.2.2:452 from 192.168.1.2:32988
 
 HTTP/1.1 200 OK
 Server: nginx/1.16.1
-Date: Thu, 11 Feb 2021 13:43:43 GMT
 Content-Type: text/html
 Content-Length: 106200
-Last-Modified: Thu, 11 Feb 2021 11:30:40 GMT
 Connection: keep-alive
 ETag: "60251560-19ed8"
 Accept-Ranges: bytes
@@ -407,14 +401,11 @@ Body stored in: /tmp/tmphG9UJe
 
 Below is a summary table for the metrics acquired with Google Chrome:
 
-| Service         | Protocol      | IP address  | Ports   |
-| --------------- | ------------- | ----------- | ------- |
-| Web page        | TCP           | 192.168.2.2 | 82, 452 |
-| Web page        | HTTP/2        | 192.168.2.2 | 81, 451 |
-| Web page        | HTTP/3 + QUIC | 192.168.2.2 | 80, 443 |
-| Video streaming | TCP           | 192.168.2.3 | 82, 452 |
-| Video streaming | HTTP/2        | 192.168.2.3 | 81, 451 |
-| Video streaming | HTTP/3 + QUIC | 192.168.2.3 | 80, 443 |
+| Protocol      | Page weight | TTFB    | Load time | Number of requests |
+| ------------- | ----------- | ------- | --------- | ------------------ |
+| HTTP/3 + QUIC | 3.5 MB      | 4.67 ms | 1,50 sec  | 30                 |
+| HTTP/2        | 3.5 MB      | 8.30 ms | 1,34 sec  | 30                 |
+| TCP           | 3.5 MB      | 5.96 ms | 1.06 sec  | 30                 |
 
 ## Credits 📓
 
