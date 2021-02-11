@@ -320,7 +320,7 @@ Whereas the performance metrics used for the latter are:
 
 In order to have a brief overview of what has to be expected, **httpstat**'s output is very useful.
 
-_HTTP/3 + QUIC web page_:
+**HTTP/3 + QUIC web page**:
 
 ```bash
 vagrant@client:~$ httpstat https://web.bacci.dev:443
@@ -348,7 +348,7 @@ Body stored in: /tmp/tmp1G1tZP
 
 To be noticed that in this case the request is `h3-27` but the response is HTTP/2, but it is not that important since all the metrics will be re-analyzed later with Google Chrome's developer tools (using HTTP/3).
 
-_HTTP/2 + SSL web page_:
+**HTTP/2 + SSL web page**:
 
 ```bash
 vagrant@client:~$ httpstat https://web.bacci.dev:451
@@ -373,7 +373,7 @@ Body stored in: /tmp/tmp7A0ND6
                                                                                  total:28ms
 ```
 
-_TCP + SSL web page_:
+**TCP + SSL web page**:
 
 ```bash
 vagrant@client:~$ httpstat https://web.bacci.dev:452
@@ -409,17 +409,22 @@ Below is a summary table for the metrics acquired with Google Chrome:
 
 All the data has been acquired through Google Chrome DevTools (from the `client`), as shown in the screenshots below.
 
-_HTTP/3 + QUIC web page_:
+**HTTP/3 + QUIC web page**:
 
 <img src="media/screenshots/DevTools-h3.png" width="1000">
 
-_HTTP/2 + SSL web page_:
+**HTTP/2 + SSL web page**:
 
 <img src="media/screenshots/DevTools-h2.png" width="1000">
 
-_TCP + SSL web page_:
+**TCP + SSL web page**:
 
 <img src="media/screenshots/DevTools-h1.png" width="1000">
+
+As expected by the **httstat** output, TCP was faster, followed by HTTP/2 and then HTTP/3.
+One of the main touted advantages of HTTP/3 is increased performance, specifically around fetching multiple objects simultaneously, and it can be seen in the waterfall above.
+
+### Video streaming performance
 
 ## Credits 📓
 
