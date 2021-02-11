@@ -401,11 +401,25 @@ Body stored in: /tmp/tmphG9UJe
 
 Below is a summary table for the metrics acquired with Google Chrome:
 
-| Protocol      | Page weight | TTFB    | Load time | Number of requests |
-| ------------- | ----------- | ------- | --------- | ------------------ |
-| HTTP/3 + QUIC | 3.5 MB      | 4.67 ms | 1,50 sec  | 30                 |
-| HTTP/2        | 3.5 MB      | 8.30 ms | 1,34 sec  | 30                 |
-| TCP           | 3.5 MB      | 5.96 ms | 1.06 sec  | 30                 |
+| Protocol      | Page weight | TTFB    | Load time | # requests | # tcp connections |
+| ------------- | ----------- | ------- | --------- | ---------- | ----------------- |
+| HTTP/3 + QUIC | 3.5 MB      | 2.83 ms | 1,08 sec  | 30         | 1                 |
+| HTTP/2        | 3.5 MB      | 3.21 ms | 961 msec  | 30         | 2                 |
+| TCP           | 3.5 MB      | 2.16 ms | 899 msec  | 30         | 7                 |
+
+All the data has been acquired through Google Chrome DevTools (from the `client`), as shown in the screenshots below.
+
+_HTTP/3 + QUIC web page_:
+
+<img src="media/screenshots/DevTools-h3.png" width="1000">
+
+_HTTP/2 + SSL web page_:
+
+<img src="media/screenshots/DevTools-h2.png" width="1000">
+
+_TCP + SSL web page_:
+
+<img src="media/screenshots/DevTools-h1.png" width="1000">
 
 ## Credits 📓
 
