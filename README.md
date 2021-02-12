@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/GiovanniBaccichet/DNCS-HTTP3">
-    <img src="media/isometric_servers.png" alt="Logo" width="200" height="200"> 
+    <img src="media/isometric-laptop.png" alt="Logo" width="210"> 
   </a>
 
   <h3 align="center">Performance Evaluation of HTTP/3 w/ QUIC</h3>
@@ -24,7 +24,7 @@
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
     <li>
-      <a href="#about---">About 🔍</a>
+      <a href="#about-">About 🔍</a>
       <ul>
         <li><a href="#team">Team</a></li>
         <li><a href="#project">Project</a></li>
@@ -48,7 +48,10 @@
         <li><a href="#results">Results</a></li>
     </ul>
     <li>
-      <a href="credits---">Credits 📓</a>
+      <a href="credits">Conclusions 📝</a>
+    </li>
+    <li>
+      <a href="credits">Credits 📓</a>
     </li>
   </ol>
 </details>
@@ -318,6 +321,8 @@ Whereas the performance metrics used for the latter are:
 -   **Dropped frames**;
 -   **Resource download events**: segment download duration expressed in milliseconds.
 
+The video streaming performance evaluation was done using [this](https://hls-js.netlify.app/demo/) tool, letting the stream play for 90 seconds, than pausing it and exporting the data.
+
 ### Results
 
 #### Web page performance
@@ -407,9 +412,9 @@ Below is a summary table for the metrics acquired with Google Chrome:
 
 | Protocol      | Page weight | TTFB    | Load time | # requests | # tcp connections |
 | ------------- | ----------- | ------- | --------- | ---------- | ----------------- |
-| HTTP/3 + QUIC | 3.5 MB      | 2.83 ms | 1,08 sec  | 30         | 1                 |
-| HTTP/2        | 3.5 MB      | 3.21 ms | 961 msec  | 30         | 2                 |
-| TCP           | 3.5 MB      | 2.16 ms | 899 msec  | 30         | 7                 |
+| HTTP/3 + QUIC | 3.5 MB      | 2.83 ms | 1.08 sec  | 30         | 0                 |
+| HTTP/2        | 3.5 MB      | 3.21 ms | 961 msec  | 30         | 1                 |
+| TCP           | 3.5 MB      | 2.16 ms | 899 msec  | 30         | 6                 |
 
 All the data has been acquired through Google Chrome DevTools (from the `client`), as shown in the screenshots below.
 
@@ -425,10 +430,33 @@ All the data has been acquired through Google Chrome DevTools (from the `client`
 
 <img src="media/screenshots/DevTools-h1.png" width="1000">
 
-As expected by the **httstat** output, TCP was faster, followed by HTTP/2 and then HTTP/3.
+As expected by the **httpstat** output, TCP was faster, followed by HTTP/2 and then HTTP/3.
 One of the main touted advantages of HTTP/3 is increased performance, specifically around fetching multiple objects simultaneously, and it can be seen in the waterfall above.
+Running other tests on **heavier web content**, the results didn't change much:
+
+| Protocol      | Page weight | TTFB    | Load time | # requests | # tcp connections |
+| ------------- | ----------- | ------- | --------- | ---------- | ----------------- |
+| HTTP/3 + QUIC | 7.3 MB      | 5.51 ms | 3.33 sec  | 134        | 0                 |
+| HTTP/2        | 7.3 MB      | 5.63 ms | 2.99 sec  | 123        | 1                 |
+| TCP           | 7.3 MB      | 4.64 ms | 2.92 sec  | 120        | 6                 |
+
+Screenshots relative to the above table can be found in the `media/screenshots` folder.
 
 ### Video streaming performance
+
+In order to be as unbiased as possible all the tests were done using the same machine, without using it (so every server was in the same condition of CPU & RAM usage).
+
+<img src="media/screenshots/hls.js-demo.png" width="1000">
+
+| Protocol      | Startup time | Avg latency | Avg bitrate | Dropped frames |
+| ------------- | ------------ | ----------- | ----------- | -------------- |
+| HTTP/3 + QUIC | 3.5 MB       | 46.39 ms    | 64.17 MB/s  | 328            |
+| HTTP/2        | 3.5 MB       | 27.86 ms    | 139.57 MB/s | 256            |
+| TCP           | 3.5 MB       | 25.78 ms    | 57.44 MB/s  | 603            |
+
+## Conclusions 💡
+
+In conclusion, based on the performance evaluation, done with the same configuration and using pages of different sizes (3.5 MB and 7 MB) and some HLS streams, it’s clear that HTTP/3 is slower than HTTP/2. Little increases in the performance are shown with very lightweight pages, but that scenario is unlikely to happen in the real world, where web pages weigh about 2/3 MB. Thanks to the parallel loading of resources and using the UDP protocol, it’s possible to see some improvements in congested environments like a real Internet scenario. Maybe, due to the development status of the HTTP/3 protocol, which still has not a stable release, significant improvements will come in the future with new features as congestion tuning or prioritization.
 
 ## Credits 📓
 
