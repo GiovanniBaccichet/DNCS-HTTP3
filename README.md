@@ -297,7 +297,7 @@ google-chrome --enable-quic --quic-version=h3-27
 ```
 
 The HTTP/3 version used was 27 and not 29 because of Google Chrome possible compatibility issues (the setting can be changed modifying the files in `docker/confs` folder).
-For the web-page static content performance evaluation a reliable tool can be Google's **Lighthouse for Google Chrome**, while for some streaming statistics were used online players with data (that will be discussed below).
+For the web-page static content performance evaluation a reliable tool can be Google Chromes's **DevTool**, while for some streaming statistics were used online players with data (that will be discussed below).
 
 ### Evaluation Criteria
 
@@ -430,6 +430,8 @@ All the data has been acquired through Google Chrome DevTools (from the `client`
 
 <img src="media/screenshots/DevTools-h1.png" width="1000">
 
+_(The number of TCP connection established can be noticed in the Connection ID column)_
+
 As expected by the **httpstat** output, TCP was faster, followed by HTTP/2 and then HTTP/3.
 One of the main touted advantages of HTTP/3 is increased performance, specifically around fetching multiple objects simultaneously, and it can be seen in the waterfall above.
 Running other tests on **heavier web content**, the results didn't change much:
@@ -460,7 +462,7 @@ Below the player used for the metrics and than the player used for the **startup
 
 ## Conclusions 💡
 
-In conclusion, based on the performance evaluation, done with the same configuration and using pages of different sizes (3.5 MB and 7 MB) and some HLS streams, it’s clear that HTTP/3 is slower than HTTP/2. Little increases in the performance are shown with very lightweight pages, but that scenario is unlikely to happen in the real world, where web pages weigh about 2/3 MB. Thanks to the parallel loading of resources and using the UDP protocol, it’s possible to see some improvements in congested environments like a real Internet scenario. Maybe, due to the development status of the HTTP/3 protocol, which still has not a stable release, significant improvements will come in the future with new features as congestion tuning or prioritization.
+In conclusion, based on the performance evaluation, done with the same configuration and using pages of different sizes of web-pages (3.5 MB and 7.3 MB) and some HLS streams, it’s clear that **HTTP/3 is slower than HTTP/2**. Little increases in the performance are shown with very lightweight pages, but that scenario is unlikely to happen in the real world, where web pages weigh about 2/3 MB. Thanks to the parallel loading of resources and using the UDP protocol, it’s possible to see some improvements in congested environments like a real Internet scenario. Maybe, due to the development status of the HTTP/3 protocol, which still has not a stable release, significant improvements will come in the future with new features as congestion tuning or prioritization.
 
 ## Credits 📓
 
