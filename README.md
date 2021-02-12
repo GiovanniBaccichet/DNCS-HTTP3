@@ -31,10 +31,10 @@
       </ul>
     </li>
     <li>
-      <a href="#lab-environment---">Lab Environment 🌍</a>
+      <a href="#lab-environment-">Lab Environment 🌍</a>
     </li>
-    <li><a href="#vagrant-configuration---">Vagrant Configuration 🖥</a></li>
-    <li><a href="#docker-configuration---">Docker Configuration 🐳</a>
+    <li><a href="#vagrant-configuration-">Vagrant Configuration 🖥</a></li>
+    <li><a href="#docker-configuration-">Docker Configuration 🐳</a>
     <ul>
         <li><a href="#ssl-certificates">SSL Certificates</a></li>
         <li><a href="#web-page-image">Web Page - image</a></li>
@@ -42,16 +42,16 @@
         <li><a href="#deployment">Deployment</a></li>
       </ul>
     </li>
-    <li><a href="#performance-evaluation--">Performance Evaluation ⏱</a></li>
+    <li><a href="#performance-evaluation-">Performance Evaluation ⏱</a></li>
     <ul>
         <li><a href="#evaluation-criteria">Evaluation Criteria</a></li>
         <li><a href="#results">Results</a></li>
     </ul>
     <li>
-      <a href="credits">Conclusions 📝</a>
+      <a href="#conclusions-">Conclusions 💡</a>
     </li>
     <li>
-      <a href="credits">Credits 📓</a>
+      <a href="#credits-">Credits 📓</a>
     </li>
   </ol>
 </details>
