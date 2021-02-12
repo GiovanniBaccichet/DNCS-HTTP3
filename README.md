@@ -37,8 +37,8 @@
     <li><a href="#docker-configuration-">Docker Configuration 🐳</a>
     <ul>
         <li><a href="#ssl-certificates">SSL Certificates</a></li>
-        <li><a href="#web-page-image">Web Page - image</a></li>
-        <li><a href="#video-streaming-image">Video Streaming - image</a></li>
+        <li><a href="#web-page---image">Web Page - image</a></li>
+        <li><a href="#video-streaming---image">Video Streaming - image</a></li>
         <li><a href="#deployment">Deployment</a></li>
       </ul>
     </li>
