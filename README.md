@@ -321,7 +321,7 @@ Whereas the performance metrics used for the latter are:
 -   **Dropped frames**;
 -   **Resource download events**: segment download duration expressed in milliseconds.
 
-The video streaming performance evaluation was done using [this](https://hls-js.netlify.app/demo/) tool, letting the stream play for 90 seconds, than pausing it and exporting the data.
+The video streaming performance evaluation was done using [this](https://hls-js.netlify.app/demo/) tool, letting the stream play for 90 seconds, than pausing it and exporting the data. The **startup time** metric has been obtained using [this](https://demo.theoplayer.com/test-your-stream-with-statistics) other player.
 
 ### Results
 
@@ -446,13 +446,17 @@ Screenshots relative to the above table can be found in the `media/screenshots` 
 
 In order to be as unbiased as possible all the tests were done using the same machine, without using it (so every server was in the same condition of CPU & RAM usage).
 
+Below the player used for the metrics and than the player used for the **startup time** calculation.
+
 <img src="media/screenshots/hls.js-demo.png" width="1000">
+
+<img src="media/screenshots/theoplayer.png" width="1000">
 
 | Protocol      | Startup time | Avg latency | Avg bitrate | Dropped frames |
 | ------------- | ------------ | ----------- | ----------- | -------------- |
-| HTTP/3 + QUIC | 3.5 MB       | 46.39 ms    | 64.17 MB/s  | 328            |
-| HTTP/2        | 3.5 MB       | 27.86 ms    | 139.57 MB/s | 256            |
-| TCP           | 3.5 MB       | 25.78 ms    | 57.44 MB/s  | 603            |
+| HTTP/3 + QUIC | 1242 ms      | 46.39 ms    | 64.17 MB/s  | 328            |
+| HTTP/2        | 985 MB       | 27.86 ms    | 139.57 MB/s | 256            |
+| TCP           | 799 MB       | 25.78 ms    | 57.44 MB/s  | 603            |
 
 ## Conclusions 💡
 
