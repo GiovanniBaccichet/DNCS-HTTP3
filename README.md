@@ -244,10 +244,7 @@ Similarly to the first Docker image, also the later has different configuration 
 
 ### Deployment
 
-For the deployment part, there are 2 different alternatives:
-
-1. Build the Docker images and run the containers directly on the host system, using the script `docker_deploy.sh`, which can be found inside the `docker` folder;
-2. Launch the Lab Environment discussed earlier with the command `vagrant up`. The latest builded Docker images will be downloaded from the [Docker Hub](https://hub.docker.com/u/giovannibaccichet) and deployed automatically.
+For the deployment part, it is necessary to launch the Lab Environment discussed earlier with the command `vagrant up`. The latest builded Docker images will be downloaded from the [Docker Hub](https://hub.docker.com/u/giovannibaccichet) and deployed automatically.
 
 Some notes have to be made: in order to change the port configuration used and the SSL/TLS certificates needed, depending on the chosen method of deployment, `docker/docker_deploy.sh` or `vagrant/docker_run.sh` have to be modified.
 All ports are parameterized (except HTTP/3 ones, because otherwise it won't work), so the configuration is pretty straight forward:
