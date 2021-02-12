@@ -78,7 +78,7 @@ In order to replicate a realistic scenario, the setup will be the following: one
 
 <img src="media/Network-topology.png" width="1000">
 
-For the performance evaluation to be likely realistic, it would have to include both web-page static contents and also video streaming (the most popular medium nowadays). Hence the need of 6 different Docker containers: `(3 protocols to be tested) X (2 kinds of media)`. The containers could run on top the same host, but for the HTTP/3+QUIC container to work, it needs to use port 80 `80` and `443`, and since there are 2 of those, it would be a problem. For this specific reason the containers are divided in 2 different hosts (one dedicated to web static contents, and the other dedicated to video streaming).
+For the performance evaluation to be likely realistic, it would have to include both web-page static contents and also video streaming (the most popular medium nowadays). Hence the need of 6 different Docker containers: `(3 protocols to be tested) X (2 kinds of media)`. The containers could run on top the same host, but for the HTTP/3+QUIC container to work, it needs to use port `80` and `443`, and since there are 2 of those, it would be a problem. For this specific reason the containers are divided in 2 different hosts (one dedicated to web static contents, and the other dedicated to video streaming).
 
 | Service         | Protocol      | IP address  | Ports   |
 | --------------- | ------------- | ----------- | ------- |
