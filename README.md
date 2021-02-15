@@ -352,7 +352,7 @@ Body stored in: /tmp/tmp1G1tZP
                                                                                  total:33ms
 ```
 
-To be noticed that in this case the request is `h3-27` but the response is HTTP/2, but it is not that important since all the metrics will be re-analyzed later with Google Chrome's developer tools (using HTTP/3).
+To be noticed that in this case the request is `h3-27` but the response is HTTP/2; it is not that important since all the metrics will be re-analyzed later with Google Chrome's developer tools (using HTTP/3).
 
 **HTTP/2 + SSL web page**:
 
