@@ -10,7 +10,7 @@
   <p align="center">
     Design of Network and Communication Systems - University of Trento - prof. Fabrizio Granelli
     <br />
-    <a href="https://www.bacci.dev"><strong>Download presentation »</strong></a>
+    <a href="https://github.com/GiovanniBaccichet/DNCS-HTTP3/blob/main/media/Presentation%20DNCS%20Lab.pdf"><strong>Download presentation »</strong></a>
     <br />
     <br />
     <a href="https://github.com/GiovanniBaccichet">Giovanni Baccichet</a>
