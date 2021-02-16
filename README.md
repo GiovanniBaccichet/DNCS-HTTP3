@@ -407,11 +407,11 @@ Body stored in: /tmp/tmphG9UJe
 
 Below is a summary table for the metrics acquired with Google Chrome:
 
-| Protocol      | Page weight | TTFB    | Load time | # requests | # tcp connections |
-| ------------- | ----------- | ------- | --------- | ---------- | ----------------- |
-| HTTP/3 + QUIC | 3.5 MB      | 2.83 ms | 1.08 sec  | 30         | 0                 |
-| HTTP/2        | 3.5 MB      | 3.21 ms | 961 msec  | 30         | 1                 |
-| TCP           | 3.5 MB      | 2.16 ms | 899 msec  | 30         | 6                 |
+| Protocol      | Page weight | TTFB      | Load time | # requests | # tcp connections |
+| ------------- | ----------- | --------- | --------- | ---------- | ----------------- |
+| HTTP/3 + QUIC | 3.5 MB      | 2.83 msec | 1.08 sec  | 30         | 0                 |
+| HTTP/2        | 3.5 MB      | 3.21 msec | 961 msec  | 30         | 1                 |
+| TCP           | 3.5 MB      | 2.16 msec | 899 msec  | 30         | 6                 |
 
 All the data has been acquired through Google Chrome DevTools (from the `client`), as shown in the screenshots below.
 
@@ -433,11 +433,11 @@ As expected by the **httpstat** output, TCP was faster, followed by HTTP/2 and t
 One of the main touted advantages of HTTP/3 is increased performance, specifically around fetching multiple objects simultaneously, and it can be seen in the waterfall above.
 Running other tests on **heavier web content**, the results didn't change much:
 
-| Protocol      | Page weight | TTFB    | Load time | # requests | # tcp connections |
-| ------------- | ----------- | ------- | --------- | ---------- | ----------------- |
-| HTTP/3 + QUIC | 7.3 MB      | 5.51 ms | 3.33 sec  | 134        | 0                 |
-| HTTP/2        | 7.3 MB      | 5.63 ms | 2.99 sec  | 123        | 1                 |
-| TCP           | 7.3 MB      | 4.64 ms | 2.92 sec  | 120        | 6                 |
+| Protocol      | Page weight | TTFB      | Load time | # requests | # tcp connections |
+| ------------- | ----------- | --------- | --------- | ---------- | ----------------- |
+| HTTP/3 + QUIC | 7.3 MB      | 5.51 msec | 3.33 sec  | 134        | 0                 |
+| HTTP/2        | 7.3 MB      | 5.63 msec | 2.99 sec  | 123        | 1                 |
+| TCP           | 7.3 MB      | 4.64 msec | 2.92 sec  | 120        | 6                 |
 
 Screenshots relative to the above table can be found in the `media/screenshots` folder.
 
@@ -453,9 +453,9 @@ Below the player used for the metrics and than the player used for the **startup
 
 | Protocol      | Startup time | Avg latency | Avg bitrate | Dropped frames |
 | ------------- | ------------ | ----------- | ----------- | -------------- |
-| HTTP/3 + QUIC | 1242 ms      | 46.39 ms    | 64.17 MB/s  | 328            |
-| HTTP/2        | 985 MB       | 27.86 ms    | 139.57 MB/s | 256            |
-| TCP           | 799 MB       | 25.78 ms    | 57.44 MB/s  | 603            |
+| HTTP/3 + QUIC | 1242 msec    | 46.39 msec  | 64.17 MB/s  | 328            |
+| HTTP/2        | 985 msec     | 27.86 msec  | 139.57 MB/s | 256            |
+| TCP           | 799 msec     | 25.78 msec  | 57.44 MB/s  | 603            |
 
 ## Conclusions 💡
 
