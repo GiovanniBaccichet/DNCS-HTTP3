@@ -157,7 +157,7 @@ http {
         proxy_request_buffering off;
 
         # Add Alt-Svc header to negotiate HTTP/3.
-        add_header alt-svc 'h3-29=":443"; ma=86400';
+        add_header alt-svc 'h3-27=":443"; ma=86400';
 
         location / {
             root html;
@@ -219,7 +219,7 @@ http {
 
         # Request buffering in not currently supported for HTTP/3.
         proxy_request_buffering off;
-        add_header alt-svc 'h3-29=":443"; ma=86400';
+        add_header alt-svc 'h3-27=":443"; ma=86400';
 
         location / {
             # Disable cache
